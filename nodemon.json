@@ -1,0 +1,15 @@
+{
+  "watch": [
+    "test",
+    "test-integration",
+    ".env",
+    ".env.defaults",
+    "contracts/**/*.sol",
+    "deploy",
+    "scripts",
+    "bot/**/*.ts"
+  ],
+  "ignore": ["./src/**/*.spec.ts", "./principles.json"],
+  "ext": "js, json, ts, sol",
+  "exec": "npm run test"
+}

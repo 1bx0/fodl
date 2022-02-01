@@ -1,0 +1,10 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "typeRoots": ["./typechain", "./node_modules/@types"],
+        "types": [],
+        "outDir": "./bot/build"
+    },
+    "include": ["./bot/src"],
+    "exclude": ["hardhat.config.ts"]
+}

@@ -1,0 +1,17 @@
+artifacts
+build
+cache
+node_modules/
+.DS_Store
+.idea
+coverage/
+coverage.json
+accounts.secret.js
+.vscode
+typechain
+.env
+.openzeppelin/
+!.openzeppelin/mainnet.json
+nodemon.custom.json
+deployments/hardhat
+deployments/localhost
