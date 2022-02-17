@@ -33,12 +33,17 @@ const PERIODS: WeekInput[] = [
   // { fodl: ethers.utils.parseUnits('4100992'), fromBlock: 13636021 },
   // { fodl: ethers.utils.parseUnits('4472861'), fromBlock: 13680218 },
   // THIRD ROOT:
-  { fodl: ethers.utils.parseUnits('2335180'), fromBlock: 13724083 },
-  { fodl: ethers.utils.parseUnits('2250052'), fromBlock: 13767793 },
-  { fodl: ethers.utils.parseUnits('2177327'), fromBlock: 13812868 },
-  { fodl: ethers.utils.parseUnits('2114078'), fromBlock: 13858107 },
+  // { fodl: ethers.utils.parseUnits('2335180'), fromBlock: 13724083 },
+  // { fodl: ethers.utils.parseUnits('2250052'), fromBlock: 13767793 },
+  // { fodl: ethers.utils.parseUnits('2177327'), fromBlock: 13812868 },
+  // { fodl: ethers.utils.parseUnits('2114078'), fromBlock: 13858107 },
   // FOURTH ROOT:
   { fodl: ethers.utils.parseUnits('2058281'), fromBlock: 13903355 },
+  { fodl: ethers.utils.parseUnits('2008480'), fromBlock: 13948582 },
+  { fodl: ethers.utils.parseUnits('1963599'), fromBlock: 13993833 },
+  { fodl: ethers.utils.parseUnits('1922819'), fromBlock: 14039104 },
+  // FIFTH ROOT:
+  { fodl: ethers.utils.parseUnits('1885504'), fromBlock: 14084333 },
 ]
 
 export const run = async () => {

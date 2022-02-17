@@ -75,4 +75,7 @@ export const errorCodes = {
   TPC2: 'TakeProfitConnector: price target must be above current price',
   TPC3: 'TakeProfitConnector: price target not reached, cannot execute',
   TPC4: 'TakeProfitConnector: provided index invalid, configuration does not exist',
+
+  SPFC01: 'SimplePositionFoldingConnector: Total supply amount cannot be less than minSupplyAmount',
+  SPFC02: 'SimplePositionFoldingConnector: Total repay amount cannot be less than minRepayAmount',
 }
