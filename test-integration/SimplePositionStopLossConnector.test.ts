@@ -14,7 +14,6 @@ import {
   float2SolidityTokenAmount,
   getAavePrice,
   getCompoundPrice,
-  getUniswapPrice,
   randomNotZero,
   toMantissa,
   v3QuoteExactOutput,
@@ -101,11 +100,9 @@ describe('SimplePositionStopLossConnector', () => {
         let flashLoanAmount: BigNumberish
         let borrowAmount: BigNumberish
         let leverage: number
-        let uniswapPrice: number
         let price: BigNumber
 
         beforeEach('take a loan', async () => {
-          uniswapPrice = await getUniswapPrice(principalToken, borrowToken)
           price = await getPlatformPrice(platform, principalToken, borrowToken)
           leverage = 2
 

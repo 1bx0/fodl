@@ -2,7 +2,10 @@ import { ethers } from 'hardhat'
 import { DeployResult, ProxyOptions } from 'hardhat-deploy/types'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { FoldingRegistry } from '../typechain'
-const fse = require('fs-extra')
+import fse from 'fs-extra'
+import path from 'path'
+
+const LOCAL_DEPLOYMENTS = ['hardhat', 'ganache', 'localhost']
 
 export const deployProxy = async (
   hre: HardhatRuntimeEnvironment,
@@ -51,9 +54,10 @@ export const deployProxy = async (
 export const deployContract = async (
   hre: HardhatRuntimeEnvironment,
   name: string,
-  args: any[] = []
+  args: any[] = [],
+  contract?: string
 ): Promise<DeployResult> => {
-  const { deployments, getNamedAccounts } = hre
+  const { deployments, getNamedAccounts, ethers } = hre
   const { deploy } = deployments
   const { deployer } = await getNamedAccounts()
 
@@ -61,6 +65,7 @@ export const deployContract = async (
     from: deployer,
     args: args,
     log: true,
+    contract: contract,
   })) as DeployResult
   if (deployment.newlyDeployed) {
     const deploymentName = hre.network.name
@@ -82,21 +87,27 @@ export const deployConnector = async (
 ) => {
   const connector = await deployContract(hre, name, args)
   if (connector.newlyDeployed) {
-    await foldingRegistry.addImplementation(connector.address, await getFunctionSigs(iface, connector.address))
+    const tx = await foldingRegistry.addImplementation(
+      connector.address,
+      await getFunctionSigs(iface, connector.address)
+    )
+    await tx.wait()
   }
 }
 
 export const loadJSON = (filename: string) => {
   const data = fse.readFileSync(filename)
-  return JSON.parse(data)
+  return JSON.parse(data.toString())
 }
 
 export const storeJSON = (filename: string, json: Object) => {
-  fse.writeFileSync(filename, JSON.stringify(json, null, 2))
+  const dirname = path.dirname(filename)
+  if (!fse.existsSync(dirname)) fse.mkdirSync(dirname)
+  fse.writeJsonSync(filename, json)
 }
 
 export const addDeploymentChange = (deploymentName: string, contract: string, body: Object, displayName?: string) => {
-  if (deploymentName == 'hardhat') return
+  if (LOCAL_DEPLOYMENTS.includes(deploymentName)) return
   const dest = `./deployments/${deploymentName}/summary.json`
   const summary = fse.existsSync(dest) ? loadJSON(dest) : {}
   summary[displayName ?? contract] = body
@@ -104,7 +115,7 @@ export const addDeploymentChange = (deploymentName: string, contract: string, bo
 }
 
 export const archiveArtifacts = (name: string, timestamp) => {
-  if (name == 'hardhat') return
+  if (LOCAL_DEPLOYMENTS.includes(name)) return
 
   const dest = `./archives/${name}/${timestamp}`
   fse.mkdirSync(dest, { recursive: true })
@@ -118,4 +129,29 @@ export const archiveArtifacts = (name: string, timestamp) => {
 export const getFunctionSigs = async (interfaceName: string, address: string) => {
   const connector = await ethers.getContractAt(interfaceName, address)
   return Object.values(connector.interface.functions).map((f: any) => connector.interface.getSighash(f.name))
+}
+
+export const linkPlatformCTokens = async (
+  registry: FoldingRegistry,
+  deploymentName: string,
+  platformName: string,
+  platformAddress: string,
+  cTokensMapping: { [token: string]: string }
+) => {
+  const tokens = {}
+  for (const token in cTokensMapping) {
+    try {
+      const ctoken = await registry.callStatic.getCToken(platformAddress, token)
+      if (ctoken.toLowerCase() != cTokensMapping[token].toLowerCase()) {
+        console.warn(
+          `Warning: Trying to upgrade token ${token} from cToken: ${ctoken} to ${cTokensMapping[token]} is not currently supported`
+        )
+      }
+      continue
+    } catch {}
+    const tx = await registry.addCTokenOnPlatform(platformAddress, token, cTokensMapping[token])
+    await tx.wait()
+    tokens[token] = cTokensMapping[token]
+  }
+  addDeploymentChange(deploymentName, `${platformName}CTokenMapping`, tokens)
 }

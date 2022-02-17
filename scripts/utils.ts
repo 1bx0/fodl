@@ -1,31 +1,64 @@
 import { parseEther } from '@ethersproject/units'
-import { BigNumberish } from 'ethers'
+import { BigNumber, BigNumberish, BytesLike, PopulatedTransaction, providers } from 'ethers'
+import { isAddress } from 'ethers/lib/utils'
 import { ethers, network } from 'hardhat'
-import { DAI, DOLA, USDC, USDT, WBTC, WETH } from '../constants/tokens'
+import { find } from 'lodash'
+import * as Tokens from '../constants/tokens'
+import { TokenData } from '../constants/tokens'
+const { DAI, DOLA, USDC, USDT, WBNB, WBTC, WETH } = Tokens
 import { MCD_WARD } from '../test/shared/constants'
 import { float2SolidityTokenAmount } from '../test/shared/utils'
-import { IDAI, IDOLA, IERC20, IUSDC, IUSDT, IWBTC, IWETH } from '../typechain'
+import {
+  IDAI,
+  IDOLA,
+  IERC20,
+  IUSDC,
+  IUSDC__factory,
+  IUSDT,
+  IUSDT__factory,
+  IWBTC,
+  IWETH__factory,
+  MultiSigWallet,
+  TimelockController,
+} from '../typechain'
+import { IBTCB__factory } from '../typechain/factories/IBTCB__factory'
 import { TOKENS } from './my_tokens'
 
 export async function getERC20Token(symbol: string) {
   symbol = symbol.trim().toUpperCase()
   return (await ethers.getContractAt('ERC20', TOKENS[symbol].address)) as IERC20
 }
+/**
+ *
+ * @param tokenDataOrContract
+ * @param recipient
+ * @param amount if float, it will be converted to BigNumber via decimals information of token
+ */
+export async function sendToken(tokenDataOrContract: TokenData | IERC20, recipient: string, amount?: BigNumberish) {
+  const search = find(Tokens, (token) => {
+    token = token as TokenData
+    return (
+      !!token.address &&
+      isAddress(token.address) &&
+      token.address.toLowerCase() === tokenDataOrContract.address.toLowerCase()
+    )
+  })
 
-export function tokenWithAddress(address: string) {
-  for (const symbol in TOKENS) {
-    if (TOKENS[symbol].address.toLowerCase() === address.toLowerCase()) {
-      return TOKENS[symbol]
-    }
+  if (!search) {
+    throw new Error(`Could not find token ${tokenDataOrContract.address}`)
   }
-  throw new Error(`Token with address: ${address} does not exist`)
-}
 
-export async function sendToken(token: IERC20, recipient: string, amount?: BigNumberish) {
-  const providerAddress = tokenWithAddress(token.address).provider
+  const tokenData = search as TokenData
+
+  const token = tokenData.contract.connect(ethers.provider)
+  const providerAddress = tokenData.provider
+
+  if (!providerAddress) throw new Error(`No provider for token ${tokenData.symbol}`)
 
   const defaultVolatileCoinAmount = 100
   const defaultStableCoinAmount = 100_000_000
+
+  if (!!amount && typeof amount === 'number') amount = float2SolidityTokenAmount(tokenData, amount)
 
   switch (token.address.toLowerCase()) {
     case WBTC.address.toLowerCase():
@@ -68,14 +101,38 @@ export async function sendToken(token: IERC20, recipient: string, amount?: BigNu
 
       break
     case WETH.address.toLowerCase():
-      const weth = (await ethers.getContractAt('IWETH', WETH.address)) as IWETH
-
+    case WBNB.address.toLowerCase():
+      const wrapper = IWETH__factory.connect(token.address, ethers.provider)
       const funder = (await ethers.getSigners())[5]
 
       if (!amount) amount = float2SolidityTokenAmount(WETH, defaultVolatileCoinAmount)
 
-      await weth.connect(funder).deposit({ value: amount })
-      await weth.connect(funder).transfer(recipient, amount)
+      await wrapper.connect(funder).deposit({ value: amount })
+      await wrapper.connect(funder).transfer(recipient, amount)
+      break
+    case Tokens.BSCUSDC.address.toLowerCase():
+      const bscUsdcMinterAddress = await IUSDT__factory.connect(tokenData.address, ethers.provider).getOwner()
+      const bscUsdcMinter = await impersonateAndFundWithETH(bscUsdcMinterAddress)
+
+      if (!amount) amount = float2SolidityTokenAmount(tokenData, defaultVolatileCoinAmount)
+
+      await IBTCB__factory.connect(tokenData.address, bscUsdcMinter).mint(amount)
+      await IBTCB__factory.connect(tokenData.address, bscUsdcMinter).transfer(recipient, amount)
+
+      break
+    case Tokens.BTCB.address.toLowerCase():
+    case Tokens.BSCUSDT.address.toLowerCase():
+    case Tokens.BSCDAI.address.toLowerCase():
+      const contract = IBTCB__factory.connect(tokenData.address, ethers.provider)
+
+      const minterAddress = await contract.owner()
+      const minter = await impersonateAndFundWithETH(minterAddress)
+
+      if (!amount) amount = float2SolidityTokenAmount(tokenData, defaultVolatileCoinAmount)
+
+      await contract.connect(minter).mint(amount)
+      await contract.connect(minter).transfer(recipient, amount)
+
       break
     case DAI.address.toLowerCase():
       const dai = (await ethers.getContractAt('IDAI', DAI.address)) as IDAI
@@ -131,4 +188,41 @@ export async function impersonateAndFundWithETH(address: string) {
   })
 
   return ethers.provider.getSigner(address)
+}
+
+export async function submitMultiSigTimelockTx(
+  populatedTx: PopulatedTransaction,
+  delay: BigNumberish,
+  timelock: TimelockController,
+  governanceMultiSig: MultiSigWallet
+): Promise<{ operationID: BigNumber; operationReadyAt: BigNumber }> {
+  if (!populatedTx.to) throw new Error('populatedTx.to is empty')
+  const txOpts: [string, BigNumberish, BytesLike, BytesLike, BytesLike] = [
+    populatedTx.to,
+    populatedTx.value || 0,
+    populatedTx.data || '0x',
+    '0x0000000000000000000000000000000000000000000000000000000000000000',
+    ethers.utils.randomBytes(32),
+  ]
+  // console.log('Options:', txOpts)
+
+  const txSchedule = await timelock.schedule(
+    ...([...txOpts, delay] as [string, BigNumberish, BytesLike, BytesLike, BytesLike, BigNumberish])
+  )
+  const operationID = await timelock.hashOperation(...txOpts)
+  const readyTimestamp = await timelock.getTimestamp(operationID)
+  // console.log(txSchedule)
+  // console.log('Waiting for tx')
+  const txScheduleReceipt = await txSchedule.wait()
+  // console.log(txScheduleReceipt)
+
+  const txExectute = await timelock.populateTransaction.execute(...txOpts)
+  const txSubmitId = await governanceMultiSig.callStatic.submitTransaction(timelock.address, 0, txExectute.data || '0x')
+  const txSubmit = await governanceMultiSig.submitTransaction(timelock.address, 0, txExectute.data || '0x')
+  // console.log(txSubmit)
+  // console.log('Waiting for tx')
+  const txSubmitReceipt = await txSubmit.wait()
+  // console.log(txSubmitReceipt)
+
+  return { operationID: txSubmitId, operationReadyAt: readyTimestamp }
 }

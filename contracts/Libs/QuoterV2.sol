@@ -4,7 +4,7 @@
 // to better debug issues (e.g. overshooting slippage) with available tools. This contract had to be manually added due to it not being included
 // in Uniswap 's npm package.
 
-pragma solidity >=0.7.0;
+pragma solidity >=0.7.6;
 pragma abicoder v2;
 
 import '@uniswap/v3-core/contracts/libraries/SafeCast.sol';

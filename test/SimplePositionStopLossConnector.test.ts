@@ -13,14 +13,7 @@ import { AllConnectors } from '../typechain/AllConnectors'
 import { IERC20 } from '../typechain/IERC20'
 import { MANTISSA, ONE_ETH } from './shared/constants'
 import { simplePositionFixture } from './shared/fixtures'
-import {
-  float2SolidityTokenAmount,
-  getAavePrice,
-  getUniswapPrice,
-  randomNotZero,
-  toMantissa,
-  v3QuoteExactOutput,
-} from './shared/utils'
+import { float2SolidityTokenAmount, getAavePrice, randomNotZero, toMantissa, v3QuoteExactOutput } from './shared/utils'
 
 const MAX_UNWIND_FACTOR_BN = MANTISSA
 const MAX_SLIPPAGE_INCENTIVE_BN = MANTISSA
@@ -184,11 +177,9 @@ describe('SimplePositionStopLossConnector', () => {
       let flashLoanAmount: BigNumberish
       let borrowAmount: BigNumberish
       let leverage: number
-      let uniswapPrice: number
       let price: BigNumber
 
       beforeEach('take a loan', async () => {
-        uniswapPrice = await getUniswapPrice(principalToken, borrowToken)
         price = await getAavePrice(platform, principalToken, borrowToken)
         leverage = 2
 

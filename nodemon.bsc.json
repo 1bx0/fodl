@@ -1,8 +1,8 @@
 {
   "watch": [
     "test",
-    "test-integration",
-    "hardhat.config.ts",
+    "test-bsc",
+    "hardhat.bsc.config.ts",
     ".env",
     ".env.defaults",
     "contracts/**/*.sol",
@@ -12,5 +12,5 @@
   ],
   "ignore": ["./src/**/*.spec.ts"],
   "ext": "js, json, ts, sol",
-  "exec": "npm run test"
+  "exec": "npm run test:bsc"
 }
