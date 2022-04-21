@@ -1,19 +1,18 @@
 import { parseEther } from '@ethersproject/units'
-import { BigNumber, BigNumberish, BytesLike, PopulatedTransaction, providers } from 'ethers'
+import { BigNumber, BigNumberish, BytesLike, PopulatedTransaction } from 'ethers'
 import { isAddress } from 'ethers/lib/utils'
 import { ethers, network } from 'hardhat'
-import { find } from 'lodash'
+import { find, values } from 'lodash'
 import * as Tokens from '../constants/tokens'
-import { TokenData } from '../constants/tokens'
-const { DAI, DOLA, USDC, USDT, WBNB, WBTC, WETH } = Tokens
+import { POLY, TokenData } from '../constants/tokens'
 import { MCD_WARD } from '../test/shared/constants'
 import { float2SolidityTokenAmount } from '../test/shared/utils'
 import {
+  ERC20,
   IDAI,
   IDOLA,
   IERC20,
   IUSDC,
-  IUSDC__factory,
   IUSDT,
   IUSDT__factory,
   IWBTC,
@@ -23,6 +22,7 @@ import {
 } from '../typechain'
 import { IBTCB__factory } from '../typechain/factories/IBTCB__factory'
 import { TOKENS } from './my_tokens'
+const { DAI, DOLA, USDC, USDT, WBNB, WBTC, WETH } = Tokens
 
 export async function getERC20Token(symbol: string) {
   symbol = symbol.trim().toUpperCase()
@@ -35,7 +35,8 @@ export async function getERC20Token(symbol: string) {
  * @param amount if float, it will be converted to BigNumber via decimals information of token
  */
 export async function sendToken(tokenDataOrContract: TokenData | IERC20, recipient: string, amount?: BigNumberish) {
-  const search = find(Tokens, (token) => {
+  const tokens = [...values(Tokens), ...Object.values(POLY).map((t) => t())]
+  const search = find(tokens, (token) => {
     token = token as TokenData
     return (
       !!token.address &&
@@ -43,7 +44,6 @@ export async function sendToken(tokenDataOrContract: TokenData | IERC20, recipie
       token.address.toLowerCase() === tokenDataOrContract.address.toLowerCase()
     )
   })
-
   if (!search) {
     throw new Error(`Could not find token ${tokenDataOrContract.address}`)
   }
@@ -87,6 +87,20 @@ export async function sendToken(tokenDataOrContract: TokenData | IERC20, recipie
       await usdc.connect(owner).mint(recipient, amount)
 
       break
+    case POLY.USDT().address.toLowerCase():
+    case POLY.USDC().address.toLowerCase():
+    case POLY.DAI().address.toLowerCase():
+      const erc20Poly = (await ethers.getContractAt('ERC20', token.address)) as ERC20
+
+      if (!amount) amount = float2SolidityTokenAmount(tokenData, defaultStableCoinAmount)
+
+      const usdtPolyProvider = tokenData.provider
+      if (!usdtPolyProvider) throw new Error(`add 'provider' property to token: ${token.name}`)
+
+      const signer = await impersonateAndFundWithETH(usdtPolyProvider)
+      // await erc20Poly.connect(signer).issue(amount)
+      await erc20Poly.connect(signer).transfer(recipient, amount)
+      break
     case USDT.address.toLowerCase():
       const usdt = (await ethers.getContractAt('IUSDT', USDT.address)) as IUSDT
       const usdtOwnerAddress = await usdt.getOwner()
@@ -102,6 +116,7 @@ export async function sendToken(tokenDataOrContract: TokenData | IERC20, recipie
       break
     case WETH.address.toLowerCase():
     case WBNB.address.toLowerCase():
+    case POLY.WMATIC().address.toLowerCase():
       const wrapper = IWETH__factory.connect(token.address, ethers.provider)
       const funder = (await ethers.getSigners())[5]
 
@@ -111,6 +126,7 @@ export async function sendToken(tokenDataOrContract: TokenData | IERC20, recipie
       await wrapper.connect(funder).transfer(recipient, amount)
       break
     case Tokens.BSCUSDC.address.toLowerCase():
+    case Tokens.BSCETH.address.toLowerCase():
       const bscUsdcMinterAddress = await IUSDT__factory.connect(tokenData.address, ethers.provider).getOwner()
       const bscUsdcMinter = await impersonateAndFundWithETH(bscUsdcMinterAddress)
 
@@ -123,6 +139,14 @@ export async function sendToken(tokenDataOrContract: TokenData | IERC20, recipie
     case Tokens.BTCB.address.toLowerCase():
     case Tokens.BSCUSDT.address.toLowerCase():
     case Tokens.BSCDAI.address.toLowerCase():
+    case Tokens.XRP.address.toLowerCase():
+    case Tokens.ADA.address.toLowerCase():
+    case Tokens.BCH.address.toLowerCase():
+    case Tokens.DOT.address.toLowerCase():
+    case Tokens.LTC.address.toLowerCase():
+    case Tokens.DOGE.address.toLowerCase():
+    case Tokens.SXP.address.toLowerCase():
+    case Tokens.BETH.address.toLowerCase():
       const contract = IBTCB__factory.connect(tokenData.address, ethers.provider)
 
       const minterAddress = await contract.owner()
@@ -144,7 +168,7 @@ export async function sendToken(tokenDataOrContract: TokenData | IERC20, recipie
       const daiWardSigner = ethers.provider.getSigner(daiOwnerAddress)
       await dai.connect(daiWardSigner).mint(recipient, amount)
       break
-    case DOLA.address.toLocaleLowerCase():
+    case DOLA.address.toLowerCase():
       const dola = (await ethers.getContractAt('IDOLA', DOLA.address)) as IDOLA
       await impersonateAndFundWithETH(providerAddress)
       const dolaOperator = await ethers.provider.getSigner(providerAddress)

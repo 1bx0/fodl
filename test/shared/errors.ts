@@ -71,10 +71,18 @@ export const errorCodes = {
   DWV3FMC6: 'DecreaseWithV3FlashMultihop: Callback was called by a non-expected address',
   DWV3FMC7: 'DecreaseWithV3FlashMultihop: Bad multihop path',
 
-  TPC1: 'TakeProfitConnector: unwind factor must be between 0 and 1e18',
-  TPC2: 'TakeProfitConnector: price target must be above current price',
-  TPC3: 'TakeProfitConnector: price target not reached, cannot execute',
-  TPC4: 'TakeProfitConnector: provided index invalid, configuration does not exist',
+  PNL1: 'PNLConnector: unwind factor must be between 0 and 1e18',
+  PNL2: 'PNLConnector: variable reward percentage cannot exceed 1e18',
+  PNL3: 'PNLConnector: invalid price target',
+  PNL4: 'PNLConnector: price target not reached',
+  PNL5: 'PNLConnector: provided index invalid, configuration does not exist',
+
+  WPNL1: 'WPNLConnector: unwind factor must be between 0 and 1e18',
+  WPNL2: 'WPNLConnector: variable reward percentage cannot exceed 1e18',
+  WPNL3: 'WPNLConnector: invalid price target',
+  WPNL4: 'WPNLConnector: address is not whitelisted',
+  WPNL5: 'WPNLConnector: price target not reached',
+  WPNL6: 'WPNLConnector: provided index invalid, configuration does not exist',
 
   SPFC01: 'SimplePositionFoldingConnector: Total supply amount cannot be less than minSupplyAmount',
   SPFC02: 'SimplePositionFoldingConnector: Total repay amount cannot be less than minRepayAmount',

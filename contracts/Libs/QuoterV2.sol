@@ -73,7 +73,7 @@ contract QuoterV2 is IQuoterV2, IUniswapV3SwapCallback, PeripheryImmutableState 
             }
         } else {
             // if the cache has been populated, ensure that the full output amount has been received
-            if (amountOutCached != 0) require(amountReceived == amountOutCached, 'Insufficient amount received');
+            if (amountOutCached != 0) require(amountReceived == amountOutCached, 'Not enough liquidity to cover trade');
             assembly {
                 let ptr := mload(0x40)
                 mstore(ptr, amountToPay)

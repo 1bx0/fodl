@@ -8,7 +8,6 @@ declare module 'hardhat/types/runtime' {
 
 import { formatUnits } from '@ethersproject/units'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
-import { FeeAmount } from '@uniswap/v3-sdk'
 import { expect } from 'chai'
 import { assert } from 'console'
 import { BigNumber, BigNumberish } from 'ethers'
@@ -39,7 +38,8 @@ import {
   FoldingRegistry,
   IERC20__factory,
 } from '../typechain'
-import { findBestUniswapV3Route, findBestFlashPair } from './utils/RouteFinders'
+import { OneInchResponses } from './test-artifacts/oneInchResponses'
+import { findBestFlashPair, deriveUniswapV3Path } from './utils/RouteFinders'
 
 describe('V3FlashswapMultihop', () => {
   const onCompound = {
@@ -241,8 +241,18 @@ describe('V3FlashswapMultihop', () => {
         ///////////////////////
         {
           let maxBorrowAmount = BigNumber.from(0)
-          const path = await findBestUniswapV3Route(borrowToken, principalToken, borrowAmount, ethers.provider)
-          const { encodedPath, tokenPath, oneInchResponse } = path
+
+          const oneInchResponseKey = `${borrowToken.symbol}-${principalToken.symbol}`
+          const oneInchResponse = OneInchResponses[oneInchResponseKey]
+          if (!oneInchResponse) throw new Error(`Could not find 1inch response artifact for ${oneInchResponseKey}`)
+
+          const { tokenPath, feePath } = await deriveUniswapV3Path(
+            borrowToken,
+            principalToken,
+            oneInchResponse,
+            ethers.provider
+          )
+          const encodedPath = encodePath(tokenPath, feePath)
 
           try {
             const { amountIn_BN: simulatedBorrowAmount } = await v3QuoteExactOutput(
@@ -363,13 +373,18 @@ describe('V3FlashswapMultihop', () => {
 
           let maxSupplyTokenRepayAmount = BigNumber.from(0)
 
-          const path = await findBestUniswapV3Route(
+          const oneInchResponseKey = `${principalToken.symbol}-${borrowToken.symbol}`
+
+          const oneInchResponse = OneInchResponses[oneInchResponseKey]
+          if (!oneInchResponse) throw new Error(`Could not find 1inch response artifact for ${oneInchResponseKey}`)
+
+          const { tokenPath, feePath } = await deriveUniswapV3Path(
             principalToken,
             borrowToken,
-            supplyTokenRepayAmount,
+            oneInchResponse,
             ethers.provider
           )
-          const { encodedPath, tokenPath, oneInchResponse } = path
+          const encodedPath = encodePath(tokenPath, feePath)
 
           try {
             const { amountIn_BN: simulatedSupplyTokenRepayAmount } = await v3QuoteExactOutput(
