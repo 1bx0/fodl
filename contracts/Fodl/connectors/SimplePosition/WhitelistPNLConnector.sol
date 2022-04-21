@@ -6,12 +6,19 @@ pragma experimental ABIEncoderV2;
 import '@openzeppelin/contracts/math/SafeMath.sol';
 import '@openzeppelin/contracts/token/ERC20/SafeERC20.sol';
 
-import '../interfaces/IPNLConnector.sol';
-import '../../modules/SimplePosition/SimplePositionStorage.sol';
-import '../../modules/PNL/PNLStorage.sol';
-import '../../modules/Lender/LendingDispatcher.sol';
+import '../interfaces/IWhitelistPNLConnector.sol';
+import '../../../Fodl/modules/SimplePosition/SimplePositionStorage.sol';
+import '../../../Fodl/modules/Lender/LendingDispatcher.sol';
+import '../../../Fodl/modules/PNL/PNLStorage.sol';
+import '../../modules/RiskManagement/RiskManagementStorage.sol';
 
-contract PNLConnector is SimplePositionStorage, LendingDispatcher, PNLStorage, IPNLConnector {
+contract WhitelistPNLConnector is
+    SimplePositionStorage,
+    LendingDispatcher,
+    PNLStorage,
+    RiskManagementStorage,
+    IWhitelistPNLConnector
+{
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
@@ -22,11 +29,12 @@ contract PNLConnector is SimplePositionStorage, LendingDispatcher, PNLStorage, I
         uint256 fixedReward,
         uint256 percentageReward,
         uint256 unwindFactor,
+        address permittedBot,
         bool isTakeProfit
     ) external override onlyAccountOwner {
         require(isSimplePosition(), 'SP1');
-        require(unwindFactor <= MANTISSA, 'PNL1');
-        require(percentageReward <= MANTISSA, 'PNL2');
+        require(unwindFactor <= MANTISSA, 'WPNL1');
+        require(percentageReward <= MANTISSA, 'WPNL2');
 
         SimplePositionStore memory sp = simplePositionStore();
         address lender = getLender(sp.platform);
@@ -36,20 +44,30 @@ contract PNLConnector is SimplePositionStorage, LendingDispatcher, PNLStorage, I
                 priceTarget >
                     getReferencePrice(lender, sp.platform, sp.supplyToken).mul(MANTISSA) /
                         getReferencePrice(lender, sp.platform, sp.borrowToken),
-                'PNL3'
+                'WPNL3'
             );
         } else {
             require(
                 priceTarget <
                     getReferencePrice(lender, sp.platform, sp.supplyToken).mul(MANTISSA) /
                         getReferencePrice(lender, sp.platform, sp.borrowToken),
-                'PNL3'
+                'WPNL3'
             );
         }
+
+        if (permittedBot != address(0)) riskMagamentStore().whitelist[permittedBot] = true;
 
         pnlStore().pnlSettings.push(
             PNLSettings(priceTarget, fixedReward, percentageReward, unwindFactor, isTakeProfit)
         );
+    }
+
+    function setPNLWhitelistPermission(address addr, bool permission) external override onlyAccountOwner {
+        riskMagamentStore().whitelist[addr] = permission;
+    }
+
+    function getPNLWhitelistPermission(address addr) external override returns (bool) {
+        return riskMagamentStore().whitelist[addr];
     }
 
     function removePNLSetting(uint256 index) external override onlyAccountOwner {
@@ -61,6 +79,7 @@ contract PNLConnector is SimplePositionStorage, LendingDispatcher, PNLStorage, I
     }
 
     function executePNL(uint256 index, bool withApproval) external override returns (uint256) {
+        require(riskMagamentStore().whitelist[tx.origin] == true, 'WPNL4');
         PNLSettings memory configuration = pnlStore().pnlSettings[index];
         removePNLInternal(index);
         SimplePositionStore memory sp = simplePositionStore();
@@ -73,9 +92,9 @@ contract PNLConnector is SimplePositionStorage, LendingDispatcher, PNLStorage, I
         uint256 priceOfBorrowToken = getReferencePrice(lender, platform, borrowToken);
 
         if (configuration.isTakeProfit) {
-            require(priceOfSupplyToken.mul(MANTISSA) / priceOfBorrowToken >= configuration.priceTarget, 'PNL4');
+            require(priceOfSupplyToken.mul(MANTISSA) / priceOfBorrowToken >= configuration.priceTarget, 'WPNL5');
         } else {
-            require(priceOfSupplyToken.mul(MANTISSA) / priceOfBorrowToken <= configuration.priceTarget, 'PNL4');
+            require(priceOfSupplyToken.mul(MANTISSA) / priceOfBorrowToken <= configuration.priceTarget, 'WPNL5');
         }
 
         uint256 repayAmount = configuration.unwindFactor.mul(getBorrowBalance(lender, platform, borrowToken)) /
@@ -98,7 +117,7 @@ contract PNLConnector is SimplePositionStorage, LendingDispatcher, PNLStorage, I
     function removePNLInternal(uint256 index) internal {
         PNLStore storage store = pnlStore();
         uint256 length = store.pnlSettings.length;
-        require(index < length, 'PNL5');
+        require(index < length, 'WPNL6');
 
         if (index != length - 1) {
             store.pnlSettings[index] = store.pnlSettings[length - 1];

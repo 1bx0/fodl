@@ -24,7 +24,6 @@ interface IOneInchResponseToken {
   name: string
   address: string
   decimals: number
-  logoUri: string
 }
 
 interface IOneInchResponseRoutePart {
@@ -34,29 +33,12 @@ interface IOneInchResponseRoutePart {
   toTokenAddress: string
 }
 
-interface IOneInchResponse {
+export interface IOneInchResponse {
   fromToken: IOneInchResponseToken
   toToken: IOneInchResponseToken
   toTokenAmount: string
   fromTokenAmount: string
   protocols: IOneInchResponseRoutePart[][][]
-  estimatedGas: number
-  tx: { data: string }
-}
-
-interface ISubgraphResponse {
-  pools: {
-    id: string
-    liquidity: string
-    feeTier: string
-    token0: ISubgraphToken
-    token1: ISubgraphToken
-  }[]
-}
-
-interface ISubgraphToken {
-  id: string
-  symbol: string
 }
 
 export async function queryOneInch(
@@ -104,28 +86,12 @@ export async function computeBestPool(provider: providers.Provider, pools: strin
   return pools[best]
 }
 
-export async function findBestUniswapV3Route(
+export async function deriveUniswapV3Path(
   tokenIn: TokenData,
   tokenOut: TokenData,
-  amountIn: number | BigNumber,
-  provider: providers.Provider,
-  maxNumberOfSwaps = 5
+  oneInchResponse: IOneInchResponse,
+  provider: providers.Provider
 ) {
-  if (typeof amountIn === 'number') amountIn = float2SolidityTokenAmount(tokenIn, amountIn)
-
-  if (amountIn.isNegative()) throw new Error(`amountIn cannot be negative`)
-
-  const oneInchResponse = await queryOneInch(
-    tokenIn.address,
-    tokenOut.address,
-    amountIn,
-    PROTOCOL.UNISWAP_V3,
-    maxNumberOfSwaps
-  )
-
-  if (!oneInchResponse || oneInchResponse.protocols.length != 1) throw new Error(`Invalid oneInch response`)
-
-  const expectedAmountOut = BigNumber.from(oneInchResponse.toTokenAmount)
   let tokenPath: string[] = [tokenIn.address]
   let feePath: FeeAmount[] = []
 
@@ -165,6 +131,33 @@ export async function findBestUniswapV3Route(
 
   if (tokenPath[0].toLowerCase() != tokenOut.address.toLowerCase())
     throw new Error(`Token mismatch: start of path must be ${tokenOut.address}. Got ${tokenPath[0]}`)
+
+  return { tokenPath, feePath }
+}
+
+export async function findBestUniswapV3Route(
+  tokenIn: TokenData,
+  tokenOut: TokenData,
+  amountIn: number | BigNumber,
+  provider: providers.Provider,
+  maxNumberOfSwaps = 5
+) {
+  if (typeof amountIn === 'number') amountIn = float2SolidityTokenAmount(tokenIn, amountIn)
+
+  if (amountIn.isNegative()) throw new Error(`amountIn cannot be negative`)
+
+  const oneInchResponse = await queryOneInch(
+    tokenIn.address,
+    tokenOut.address,
+    amountIn,
+    PROTOCOL.UNISWAP_V3,
+    maxNumberOfSwaps
+  )
+
+  if (!oneInchResponse || oneInchResponse.protocols.length != 1)
+    throw new Error(`Invalid oneInch response\n${JSON.stringify(oneInchResponse)}`)
+  const expectedAmountOut = BigNumber.from(oneInchResponse.toTokenAmount)
+  const { tokenPath, feePath } = await deriveUniswapV3Path(tokenIn, tokenOut, oneInchResponse, provider)
 
   const encodedPath = encodePath(tokenPath, feePath)
   return { encodedPath, tokenPath, feePath, expectedAmountOut, oneInchResponse }

@@ -3,16 +3,16 @@ import { expect } from 'chai'
 import { BigNumber } from 'ethers'
 import { deployments, ethers } from 'hardhat'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
-import { cloneDeep } from 'lodash'
-import { PANCAKE_ROUTER, USE_PANCAKESWAP_EXCHANGE, VENUS_PLATFORM } from '../constants/deploy'
-import { BSCDAI, BSCUSDC, BSCUSDT, BTCB, BUSD, TokenData, WBNB } from '../constants/tokens'
+import { cloneDeep, last } from 'lodash'
+import { AAVE_PLATFORM_POLYGON, QUICKSWAP_ROUTER, USE_QUICKSWAP_EXCHANGE } from '../constants/deploy'
+import { POLY, TokenData } from '../constants/tokens'
 import { sendToken } from '../scripts/utils'
 import { MANTISSA } from '../test/shared/constants'
 import { CHAIN_ID, findBestRoute, PROTOCOL } from '../test/shared/routeFinder'
 import { float2SolidityTokenAmount, solidityTokenAmount2Float } from '../test/shared/utils'
 import {
-  AllConnectorsBSC,
-  AllConnectorsBSC__factory,
+  AllConnectorsPolygon,
+  AllConnectorsPolygon__factory,
   FodlNFT,
   FodlNFT__factory,
   FoldingRegistry,
@@ -23,16 +23,15 @@ import {
   PancakeswapRouter__factory,
 } from '../typechain'
 
-const BNB_PRINCIPAL_AMOUNT = 1_000
-const BTC_PRINCIPAL_AMOUNT = 10
+const MATIC_PRINCIPAL_AMOUNT = 1_000
 const USD_PRINCIPAL_AMOUNT = 100_000
 
 const MAX_DEVIATION = 0.4
 
-describe('Integration', () => {
-  const inVenus = {
-    platform: VENUS_PLATFORM,
-    platformName: 'VENUS',
+describe.only('SimplePositionPolygonFoldingConnector', () => {
+  const inAave = {
+    platform: AAVE_PLATFORM_POLYGON,
+    platformName: 'AAVE',
   }
 
   // Max leverage for a coin: CF / (1-CF) where CF = Collateral Factor
@@ -46,41 +45,22 @@ describe('Integration', () => {
   }
 
   const TESTS_TABLE: ITEST_TABLE[] = [
-    // Venus test cases
-    { ...inVenus, principalToken: WBNB, borrowToken: BSCUSDT, principalAmount: BNB_PRINCIPAL_AMOUNT, leverage: 2 },
-    { ...inVenus, principalToken: WBNB, borrowToken: BSCUSDC, principalAmount: BNB_PRINCIPAL_AMOUNT, leverage: 2 },
-    { ...inVenus, principalToken: WBNB, borrowToken: BSCDAI, principalAmount: BNB_PRINCIPAL_AMOUNT, leverage: 2 },
-    { ...inVenus, principalToken: WBNB, borrowToken: BTCB, principalAmount: BNB_PRINCIPAL_AMOUNT, leverage: 2 },
-    { ...inVenus, principalToken: WBNB, borrowToken: BUSD, principalAmount: BNB_PRINCIPAL_AMOUNT, leverage: 2 },
-
-    { ...inVenus, principalToken: BTCB, borrowToken: BSCUSDT, principalAmount: BTC_PRINCIPAL_AMOUNT, leverage: 2 },
-    { ...inVenus, principalToken: BTCB, borrowToken: BSCUSDC, principalAmount: BTC_PRINCIPAL_AMOUNT, leverage: 2 },
-    { ...inVenus, principalToken: BTCB, borrowToken: BSCDAI, principalAmount: BTC_PRINCIPAL_AMOUNT, leverage: 2 },
-    { ...inVenus, principalToken: BTCB, borrowToken: WBNB, principalAmount: BTC_PRINCIPAL_AMOUNT, leverage: 2 },
-    { ...inVenus, principalToken: BTCB, borrowToken: BUSD, principalAmount: BTC_PRINCIPAL_AMOUNT, leverage: 2 },
-
-    { ...inVenus, principalToken: BUSD, borrowToken: BSCUSDT, principalAmount: USD_PRINCIPAL_AMOUNT, leverage: 2 },
-    { ...inVenus, principalToken: BUSD, borrowToken: BSCUSDC, principalAmount: USD_PRINCIPAL_AMOUNT, leverage: 2 },
-    { ...inVenus, principalToken: BUSD, borrowToken: BSCDAI, principalAmount: USD_PRINCIPAL_AMOUNT, leverage: 2 },
-    { ...inVenus, principalToken: BUSD, borrowToken: BTCB, principalAmount: USD_PRINCIPAL_AMOUNT, leverage: 2 },
-    { ...inVenus, principalToken: BUSD, borrowToken: WBNB, principalAmount: USD_PRINCIPAL_AMOUNT, leverage: 2 },
-
-    /**
-     * XVS gives troubles due to borrow cap
-     */
-
-    // { ...inVenus, principalToken: WBNB, borrowToken: XVS, principalAmount: 10, leverage: 1.2 },
-    // { ...inVenus, principalToken: BUSD, borrowToken: XVS, principalAmount: 10, leverage: 2 },
-    // { ...inVenus, principalToken: BTCB, borrowToken: XVS, principalAmount: 10, leverage: 2 },
-    // { ...inVenus, principalToken: BSCDAI, borrowToken: XVS, principalAmount: 10, leverage: 2 },
+    {
+      ...inAave,
+      principalToken: POLY.WMATIC(),
+      borrowToken: POLY.USDC(),
+      principalAmount: MATIC_PRINCIPAL_AMOUNT,
+      leverage: 2,
+    },
   ]
 
   let alice: SignerWithAddress
-  let account: AllConnectorsBSC
+  let account: AllConnectorsPolygon
   let lens: LendingPlatformLens
   let registry: FoldingRegistry
   let nft: FodlNFT
   let router: PancakeswapRouter
+  let priceImpact: number = 0
 
   const fixture = deployments.createFixture(async (hre: HardhatRuntimeEnvironment) => {
     const signers = await ethers.getSigners()
@@ -95,25 +75,46 @@ describe('Integration', () => {
     registry = FoldingRegistry__factory.connect(registryAddress, alice)
     nft = FodlNFT__factory.connect(fodlNFTAddress, alice)
     lens = LendingPlatformLens__factory.connect(lensAddress, ethers.provider)
-    router = PancakeswapRouter__factory.connect(PANCAKE_ROUTER, ethers.provider)
+    router = PancakeswapRouter__factory.connect(QUICKSWAP_ROUTER, ethers.provider)
 
-    account = AllConnectorsBSC__factory.connect(await registry.callStatic.createAccount(), alice)
+    account = AllConnectorsPolygon__factory.connect(await registry.callStatic.createAccount(), alice)
     await registry.createAccount()
 
-    await sendToken(WBNB, alice.address, BNB_PRINCIPAL_AMOUNT * 100)
-    await sendToken(BTCB, alice.address, BTC_PRINCIPAL_AMOUNT * 100)
-    await sendToken(BUSD, alice.address, USD_PRINCIPAL_AMOUNT * 100)
-    await sendToken(BSCDAI, alice.address, USD_PRINCIPAL_AMOUNT * 100)
-    await sendToken(BSCUSDC, alice.address, USD_PRINCIPAL_AMOUNT * 100)
+    await sendToken(POLY.WMATIC(), alice.address, MATIC_PRINCIPAL_AMOUNT * 100)
+    // await sendToken(POLY.USDT(), alice.address, USD_PRINCIPAL_AMOUNT * 100)
+    // await sendToken(POLY.DAI(), alice.address, USD_PRINCIPAL_AMOUNT * 100)
+    await sendToken(POLY.USDC(), alice.address, USD_PRINCIPAL_AMOUNT * 100)
 
-    await WBNB.contract.connect(alice).approve(account.address, ethers.constants.MaxUint256)
-    await BTCB.contract.connect(alice).approve(account.address, ethers.constants.MaxUint256)
-    await BUSD.contract.connect(alice).approve(account.address, ethers.constants.MaxUint256)
-    await BSCDAI.contract.connect(alice).approve(account.address, ethers.constants.MaxUint256)
-    await BSCUSDC.contract.connect(alice).approve(account.address, ethers.constants.MaxUint256)
+    await POLY.WMATIC().contract.connect(alice).approve(account.address, ethers.constants.MaxUint256)
+    // await POLY.USDT().contract.connect(alice).approve(account.address, ethers.constants.MaxUint256)
+    // await POLY.DAI().contract.connect(alice).approve(account.address, ethers.constants.MaxUint256)
+    await POLY.USDC().contract.connect(alice).approve(account.address, ethers.constants.MaxUint256)
   })
 
+  const getPriceImpact = async (amountIn: number, tokenIn: TokenData, tokenOut: TokenData, tokenPath: string[]) => {
+    const one = float2SolidityTokenAmount(tokenIn, 1)
+
+    const currentVirtualPrice = await router
+      .getAmountsOut(one, tokenPath)
+      .then(last)
+      .then((amountOut_BN) => {
+        return solidityTokenAmount2Float(tokenOut, amountOut_BN!)
+      })
+
+    const amountIn_BN = float2SolidityTokenAmount(tokenIn, amountIn)
+    const amountOut_BN = last(await router.getAmountsOut(amountIn_BN, tokenPath))
+
+    if (!amountOut_BN) throw new Error(`Could not quote on pancake router`)
+    const amountOut = solidityTokenAmount2Float(tokenOut, amountOut_BN)
+
+    const executionPrice = amountOut / amountIn
+    const difference = 100 * Math.abs(1 - executionPrice / currentVirtualPrice)
+
+    return difference
+  }
+
   beforeEach('deploy system', async () => {
+    priceImpact = 0
     await fixture()
   })
 
@@ -123,7 +124,7 @@ describe('Integration', () => {
 
       const [{ referencePrice: principalTokenPrice }, { referencePrice: borrowTokenPrice }] =
         await lens.callStatic.getAssetMetadata(
-          [VENUS_PLATFORM, VENUS_PLATFORM],
+          [AAVE_PLATFORM_POLYGON, AAVE_PLATFORM_POLYGON],
           [principalToken.address, borrowToken.address]
         )
 
@@ -136,15 +137,23 @@ describe('Integration', () => {
         const borrowAmountBN = supplyAmountBN.sub(principalAmountBN).mul(price).div(MANTISSA)
 
         ;({ tokenPath } = await findBestRoute(
-          PROTOCOL.PANCAKESWAP_V2,
-          CHAIN_ID.BSC,
+          PROTOCOL.POLYGON_QUICKSWAP,
+          CHAIN_ID.POLYGON,
           borrowToken,
           principalToken,
           borrowAmountBN
         ))
+
         const encodedExchangeData = ethers.utils.defaultAbiCoder.encode(
           ['bytes1', 'address[]'],
-          [USE_PANCAKESWAP_EXCHANGE, tokenPath]
+          [USE_QUICKSWAP_EXCHANGE, tokenPath]
+        )
+
+        priceImpact = await getPriceImpact(
+          solidityTokenAmount2Float(borrowToken, borrowAmountBN),
+          borrowToken,
+          principalToken,
+          tokenPath
         )
 
         await account.increaseSimplePositionWithLoop(
@@ -158,34 +167,34 @@ describe('Integration', () => {
         )
       }
 
-      // Increase leverage
-      {
-        const targetLeverage = leverage * 1.5
-        const positionValue = solidityTokenAmount2Float(principalToken, await account.callStatic.getPositionValue())
+      // // Increase leverage
+      // {
+      //   const targetLeverage = 3
+      //   const positionValue = solidityTokenAmount2Float(principalToken, await account.callStatic.getPositionValue())
 
-        const targetSupplyAmount = positionValue * targetLeverage
-        const targetSupplyAmount_BN = float2SolidityTokenAmount(principalToken, targetSupplyAmount)
+      //   const targetSupplyAmount = positionValue * targetLeverage
+      //   const targetSupplyAmount_BN = float2SolidityTokenAmount(principalToken, targetSupplyAmount)
 
-        const supplyAmountBN = targetSupplyAmount_BN.sub(await account.callStatic.getSupplyBalance())
-        const borrowAmount_BN = supplyAmountBN.mul(principalTokenPrice).div(borrowTokenPrice)
-        const slippage = MANTISSA.mul(80).div(100)
-        const minSupplyAmountBN = supplyAmountBN.mul(slippage).div(MANTISSA)
+      //   const supplyAmountBN = targetSupplyAmount_BN.sub(await account.callStatic.getSupplyBalance())
+      //   const borrowAmount_BN = supplyAmountBN.mul(principalTokenPrice).div(borrowTokenPrice)
+      //   const slippage = MANTISSA.mul(80).div(100)
+      //   const minSupplyAmountBN = supplyAmountBN.mul(slippage).div(MANTISSA)
 
-        const encodedExchangeData = ethers.utils.defaultAbiCoder.encode(
-          ['bytes1', 'address[]'],
-          [USE_PANCAKESWAP_EXCHANGE, tokenPath]
-        )
+      //   const encodedExchangeData = ethers.utils.defaultAbiCoder.encode(
+      //     ['bytes1', 'address[]'],
+      //     [USE_QUICKSWAP_EXCHANGE, tokenPath]
+      //   )
 
-        await account.increaseSimplePositionWithLoop(
-          platform,
-          principalToken.address,
-          0,
-          minSupplyAmountBN,
-          borrowToken.address,
-          borrowAmount_BN,
-          encodedExchangeData
-        )
-      }
+      //   await account.increaseSimplePositionWithLoop(
+      //     platform,
+      //     principalToken.address,
+      //     0,
+      //     minSupplyAmountBN,
+      //     borrowToken.address,
+      //     borrowAmount_BN,
+      //     encodedExchangeData
+      //   )
+      // }
 
       // Withdraw without changing leverage
       {
@@ -215,7 +224,7 @@ describe('Integration', () => {
 
         const encodedExchangeData = ethers.utils.defaultAbiCoder.encode(
           ['bytes1', 'address[]'],
-          [USE_PANCAKESWAP_EXCHANGE, _tokenPath]
+          [USE_QUICKSWAP_EXCHANGE, _tokenPath]
         )
 
         await account.decreaseSimplePositionWithLoop(
@@ -252,7 +261,7 @@ describe('Integration', () => {
 
         const encodedExchangeData = ethers.utils.defaultAbiCoder.encode(
           ['bytes1', 'address[]'],
-          [USE_PANCAKESWAP_EXCHANGE, _tokenPath]
+          [USE_QUICKSWAP_EXCHANGE, _tokenPath]
         )
 
         await account.decreaseSimplePositionWithLoop(
@@ -280,12 +289,11 @@ describe('Integration', () => {
         let minRepayAmount_BN = redeemAmount_BN.mul(principalTokenPrice).div(borrowTokenPrice)
         minRepayAmount_BN = minRepayAmount_BN.mul(80).div(100) // Substract slippage
 
-        // findBestBSCRoute(principalToken, borrowToken, minRepayAmount_BN))
         const _tokenPath = cloneDeep(tokenPath).reverse()
 
         const encodedExchangeData = ethers.utils.defaultAbiCoder.encode(
           ['bytes1', 'address[]'],
-          [USE_PANCAKESWAP_EXCHANGE, _tokenPath]
+          [USE_QUICKSWAP_EXCHANGE, _tokenPath]
         )
 
         await account.decreaseSimplePositionWithLoop(
@@ -301,5 +309,9 @@ describe('Integration', () => {
         expect(await account.callStatic.getCollateralUsageFactor()).to.be.equal(0)
       }
     })
+  })
+
+  afterEach('print price impact', async () => {
+    console.log(`\t> Price impact: ${priceImpact.toFixed(2)}%`)
   })
 })

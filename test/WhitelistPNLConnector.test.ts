@@ -1,15 +1,15 @@
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
 import { expect } from 'chai'
 import { parseEther } from 'ethers/lib/utils'
-import { ethers } from 'hardhat'
+import { deployments, ethers } from 'hardhat'
 import { last } from 'lodash'
 import { AAVE_PLATFORM } from '../constants/deploy'
 import { DAI, WETH } from '../constants/tokens'
 import { sendToken } from '../scripts/utils'
-import { FodlNFT } from '../typechain'
+import { AllConnectorsBSC, AllConnectorsBSC__factory, FodlNFT } from '../typechain'
 import { AavePriceOracleMock } from '../typechain/AavePriceOracleMock'
-import { AllConnectors } from '../typechain/AllConnectors'
 import { IERC20 } from '../typechain/IERC20'
+import { deployConnector } from '../utils/deploy'
 import { MANTISSA, ONE_ETH } from './shared/constants'
 import { simplePositionFixture } from './shared/fixtures'
 import { getAavePrice } from './shared/utils'
@@ -24,7 +24,7 @@ const SUPPLY_AMOUNT = ONE_ETH.mul(50)
 const TEST_TOLERANCE = 5 // Funds received from operations to be within 5% of simulated results
 const { MaxUint256 } = ethers.constants
 
-describe('PNLConnector', () => {
+describe('WhitelistPNLConnector', () => {
   /**
    * Involved addresses:
    *
@@ -37,7 +37,7 @@ describe('PNLConnector', () => {
   let bot: SignerWithAddress
   let mallory: SignerWithAddress
 
-  let account: AllConnectors
+  let account: AllConnectorsBSC
   let fodlNFT: FodlNFT
   let aavePriceOracleMock: AavePriceOracleMock
 
@@ -51,8 +51,15 @@ describe('PNLConnector', () => {
     await account.increaseSimplePositionWithFunds(AAVE_PLATFORM, WETH.address, SUPPLY_AMOUNT, DAI.address, borrowAmount)
   }
 
+  const fixture = deployments.createFixture(async (hre) => {
+    const fixt = await simplePositionFixture()
+    const { foldingRegistry, account, alice } = fixt
+    await deployConnector(hre, foldingRegistry, 'WhitelistPNLConnector', 'IWhitelistPNLConnector')
+    return { ...fixt, account: AllConnectorsBSC__factory.connect(account.address, alice) }
+  })
+
   beforeEach('load fixture', async () => {
-    ;({ account, alice, bot, mallory, aavePriceOracleMock, fodlNFT } = await simplePositionFixture())
+    ;({ account, alice, bot, mallory, aavePriceOracleMock, fodlNFT } = await fixture())
   })
 
   describe('configurePNL()', async () => {
@@ -69,11 +76,13 @@ describe('PNLConnector', () => {
 
         const currentPriceRatio = ethPrice.mul(MANTISSA).div(daiPrice)
         const takeProfitPriceTarget = currentPriceRatio.add(1)
+
         await account.configurePNL(
           takeProfitPriceTarget,
           FIXED_REWARD_BN,
           MAX_PERCENTAGE_REWARD_BN,
           MAX_UNWIND_FACTOR_BN,
+          bot.address,
           true
         )
 
@@ -89,6 +98,7 @@ describe('PNLConnector', () => {
           FIXED_REWARD_BN,
           MAX_PERCENTAGE_REWARD_BN,
           MAX_UNWIND_FACTOR_BN,
+          bot.address,
           false
         )
 
@@ -101,18 +111,18 @@ describe('PNLConnector', () => {
 
       it('rejects if trying to configure with unwind factor > 1', async () => {
         const unwindFactor = MAX_UNWIND_FACTOR_BN.add(1)
-        const tx = account.configurePNL(0, 0, MAX_PERCENTAGE_REWARD_BN, unwindFactor, true)
-        await expect(tx).to.be.revertedWith('PNL1')
+        const tx = account.configurePNL(0, 0, MAX_PERCENTAGE_REWARD_BN, unwindFactor, bot.address, true)
+        await expect(tx).to.be.revertedWith('WPNL1')
       })
 
       it('rejects if trying to configure with percentage incentive > 1', async () => {
         const percentageIncentive = MAX_PERCENTAGE_REWARD_BN.add(1)
-        const tx = account.configurePNL(0, 0, percentageIncentive, MAX_UNWIND_FACTOR_BN, true)
-        await expect(tx).to.be.revertedWith('PNL2')
+        const tx = account.configurePNL(0, 0, percentageIncentive, MAX_UNWIND_FACTOR_BN, bot.address, true)
+        await expect(tx).to.be.revertedWith('WPNL2')
       })
 
       it('rejects if not called by owner', async () => {
-        const tx = account.connect(mallory).configurePNL(0, 0, MAX_PERCENTAGE_REWARD_BN, 0, true)
+        const tx = account.connect(mallory).configurePNL(0, 0, MAX_PERCENTAGE_REWARD_BN, 0, bot.address, true)
         await expect(tx).to.be.revertedWith('FA2')
       })
 
@@ -129,9 +139,10 @@ describe('PNLConnector', () => {
             FIXED_REWARD_BN,
             MAX_PERCENTAGE_REWARD_BN,
             MAX_UNWIND_FACTOR_BN,
+            bot.address,
             true
           )
-          await expect(tx).to.be.revertedWith('PNL3')
+          await expect(tx).to.be.revertedWith('WPNL3')
         })
       })
 
@@ -148,9 +159,10 @@ describe('PNLConnector', () => {
             FIXED_REWARD_BN,
             MAX_PERCENTAGE_REWARD_BN,
             MAX_UNWIND_FACTOR_BN,
+            bot.address,
             false
           )
-          await expect(tx).to.be.revertedWith('PNL3')
+          await expect(tx).to.be.revertedWith('WPNL3')
         })
       })
     })
@@ -162,6 +174,7 @@ describe('PNLConnector', () => {
           FIXED_REWARD_BN,
           MAX_PERCENTAGE_REWARD_BN,
           MAX_UNWIND_FACTOR_BN,
+          bot.address,
           true
         )
         await expect(tx).to.be.revertedWith('SP1')
@@ -175,7 +188,7 @@ describe('PNLConnector', () => {
 
       await account
         .connect(alice)
-        .configurePNL(MaxUint256, FIXED_REWARD_BN, MAX_PERCENTAGE_REWARD_BN, MAX_UNWIND_FACTOR_BN, true)
+        .configurePNL(MaxUint256, FIXED_REWARD_BN, MAX_PERCENTAGE_REWARD_BN, MAX_UNWIND_FACTOR_BN, bot.address, true)
 
       let takeProfitSettings = await account.callStatic.getAllPNLSettings()
       expect(takeProfitSettings).to.have.length(1)
@@ -195,7 +208,7 @@ describe('PNLConnector', () => {
         const priceTarget = MaxUint256.sub(i)
         await account
           .connect(alice)
-          .configurePNL(priceTarget, FIXED_REWARD_BN, MAX_PERCENTAGE_REWARD_BN, MAX_UNWIND_FACTOR_BN, true)
+          .configurePNL(priceTarget, FIXED_REWARD_BN, MAX_PERCENTAGE_REWARD_BN, MAX_UNWIND_FACTOR_BN, bot.address, true)
       }
       const settings = await account.callStatic.getAllPNLSettings()
       expect(settings).to.have.length(amountOfTakeProfits)
@@ -243,7 +256,7 @@ describe('PNLConnector', () => {
     it('rejects if index of take profit does not exist', async () => {
       const indexToRemove = amountOfTakeProfits + 1
 
-      await expect(account.connect(alice).removePNLSetting(indexToRemove)).to.be.revertedWith('PNL5')
+      await expect(account.connect(alice).removePNLSetting(indexToRemove)).to.be.revertedWith('WPNL6')
     })
   })
 
@@ -256,12 +269,12 @@ describe('PNLConnector', () => {
       await openSimplePositionWithoutLeverage()
       await account
         .connect(alice)
-        .configurePNL(MaxUint256, FIXED_REWARD_BN, MAX_PERCENTAGE_REWARD_BN, MAX_UNWIND_FACTOR_BN, true)
+        .configurePNL(MaxUint256, FIXED_REWARD_BN, MAX_PERCENTAGE_REWARD_BN, MAX_UNWIND_FACTOR_BN, bot.address, true)
       await account.connect(alice).removeAllPNLSettings()
       const takeProfitSettings = await account.callStatic.getAllPNLSettings()
       expect(takeProfitSettings).to.have.length(0)
 
-      await account.connect(alice).configurePNL(MaxUint256, 0, 0, MAX_UNWIND_FACTOR_BN, true)
+      await account.connect(alice).configurePNL(MaxUint256, 0, 0, MAX_UNWIND_FACTOR_BN, bot.address, true)
 
       // Allows inserting new PNL settings after deletion
       const pnlSettings = await account.callStatic.getAllPNLSettings()
@@ -279,7 +292,7 @@ describe('PNLConnector', () => {
       await openSimplePositionWithoutLeverage()
       await account.connect(alice).removeAllPNLSettings()
 
-      await account.connect(alice).configurePNL(MaxUint256, 0, 0, MAX_UNWIND_FACTOR_BN, true)
+      await account.connect(alice).configurePNL(MaxUint256, 0, 0, MAX_UNWIND_FACTOR_BN, bot.address, true)
 
       const pnlSettings = await account.callStatic.getAllPNLSettings()
       expect(pnlSettings).to.have.length(1)
@@ -294,6 +307,10 @@ describe('PNLConnector', () => {
   })
 
   describe('executePNL()', () => {
+    it('rejects if called by non-whitelisted address', async () => {
+      await expect(account.connect(mallory).executePNL(0, false)).to.be.revertedWith('WPNL4')
+    })
+
     describe('take profit', () => {
       const withApproval = false
 
@@ -308,7 +325,9 @@ describe('PNLConnector', () => {
 
           const currentPriceRatio = ethPrice.mul(MANTISSA).div(daiPrice)
           const priceTarget = currentPriceRatio.add(1)
-          await account.connect(alice).configurePNL(priceTarget, FIXED_REWARD_BN, 0, MAX_UNWIND_FACTOR_BN, true)
+          await account
+            .connect(alice)
+            .configurePNL(priceTarget, FIXED_REWARD_BN, 0, MAX_UNWIND_FACTOR_BN, bot.address, true)
         })
 
         it('works when price has been reached', async () => {
@@ -334,11 +353,11 @@ describe('PNLConnector', () => {
         })
 
         it('rejects if target price has not been reached', async () => {
-          await expect(account.connect(mallory).executePNL(0, withApproval)).to.be.revertedWith('PNL4')
+          await expect(account.connect(bot).executePNL(0, withApproval)).to.be.revertedWith('WPNL5')
         })
 
         it('rejects if trying to target a take profit index that does not exist', async () => {
-          expect(account.connect(mallory).executePNL(1, withApproval)).to.be.reverted
+          expect(account.connect(bot).executePNL(1, withApproval)).to.be.reverted
         })
       })
 
@@ -353,7 +372,9 @@ describe('PNLConnector', () => {
 
           const currentPriceRatio = ethPrice.mul(MANTISSA).div(daiPrice)
           const priceTarget = currentPriceRatio.add(1)
-          await account.connect(alice).configurePNL(priceTarget, 0, PERCENTAGE_REWARD_BN, MAX_UNWIND_FACTOR_BN, true)
+          await account
+            .connect(alice)
+            .configurePNL(priceTarget, 0, PERCENTAGE_REWARD_BN, MAX_UNWIND_FACTOR_BN, bot.address, true)
         })
 
         it('works when price has been reached', async () => {
@@ -394,7 +415,7 @@ describe('PNLConnector', () => {
           const priceTarget = currentPriceRatio.add(1)
           await account
             .connect(alice)
-            .configurePNL(priceTarget, FIXED_REWARD_BN, PERCENTAGE_REWARD_BN, MAX_UNWIND_FACTOR_BN, true)
+            .configurePNL(priceTarget, FIXED_REWARD_BN, PERCENTAGE_REWARD_BN, MAX_UNWIND_FACTOR_BN, bot.address, true)
         })
 
         it('works when price has been reached', async () => {
@@ -441,7 +462,9 @@ describe('PNLConnector', () => {
 
         const currentPriceRatio = ethPrice.mul(MANTISSA).div(daiPrice)
         const priceTarget = currentPriceRatio.add(1)
-        await account.connect(alice).configurePNL(priceTarget, FIXED_REWARD_BN, 0, MAX_UNWIND_FACTOR_BN, true)
+        await account
+          .connect(alice)
+          .configurePNL(priceTarget, FIXED_REWARD_BN, 0, MAX_UNWIND_FACTOR_BN, bot.address, true)
       })
 
       it('works when price has been reached', async () => {
@@ -484,7 +507,9 @@ describe('PNLConnector', () => {
 
           const currentPriceRatio = ethPrice.mul(MANTISSA).div(daiPrice)
           const priceTarget = currentPriceRatio.sub(1)
-          await account.connect(alice).configurePNL(priceTarget, FIXED_REWARD_BN, 0, MAX_UNWIND_FACTOR_BN, false)
+          await account
+            .connect(alice)
+            .configurePNL(priceTarget, FIXED_REWARD_BN, 0, MAX_UNWIND_FACTOR_BN, bot.address, false)
         })
 
         it('works when price has been reached', async () => {
@@ -510,7 +535,7 @@ describe('PNLConnector', () => {
         })
 
         it('rejects if target price has not been reached', async () => {
-          await expect(account.connect(mallory).executePNL(0, withApproval)).to.be.revertedWith('PNL4')
+          await expect(account.connect(bot).executePNL(0, withApproval)).to.be.revertedWith('WPNL5')
         })
       })
 
@@ -525,7 +550,9 @@ describe('PNLConnector', () => {
 
           const currentPriceRatio = ethPrice.mul(MANTISSA).div(daiPrice)
           const priceTarget = currentPriceRatio.sub(1)
-          await account.connect(alice).configurePNL(priceTarget, 0, PERCENTAGE_REWARD_BN, MAX_UNWIND_FACTOR_BN, false)
+          await account
+            .connect(alice)
+            .configurePNL(priceTarget, 0, PERCENTAGE_REWARD_BN, MAX_UNWIND_FACTOR_BN, bot.address, false)
         })
 
         it('works when price has been reached', async () => {
@@ -566,7 +593,7 @@ describe('PNLConnector', () => {
           const priceTarget = currentPriceRatio.sub(1)
           await account
             .connect(alice)
-            .configurePNL(priceTarget, FIXED_REWARD_BN, PERCENTAGE_REWARD_BN, MAX_UNWIND_FACTOR_BN, false)
+            .configurePNL(priceTarget, FIXED_REWARD_BN, PERCENTAGE_REWARD_BN, MAX_UNWIND_FACTOR_BN, bot.address, false)
         })
 
         it('works when price has been reached', async () => {
@@ -617,15 +644,29 @@ describe('PNLConnector', () => {
       // Take profit setting
       await account
         .connect(alice)
-        .configurePNL(takeProfitPriceTarget, FIXED_REWARD_BN, PERCENTAGE_REWARD_BN, MAX_UNWIND_FACTOR_BN, true)
+        .configurePNL(
+          takeProfitPriceTarget,
+          FIXED_REWARD_BN,
+          PERCENTAGE_REWARD_BN,
+          MAX_UNWIND_FACTOR_BN,
+          bot.address,
+          true
+        )
 
       // Stop loss setting
-      await account.connect(alice).configurePNL(stoplossPriceTarget, 0, 0, MAX_UNWIND_FACTOR_BN, false)
+      await account.connect(alice).configurePNL(stoplossPriceTarget, 0, 0, MAX_UNWIND_FACTOR_BN, bot.address, false)
 
       // Bad take profit setting
       await account
         .connect(alice)
-        .configurePNL(takeProfitPriceTarget, SUPPLY_AMOUNT, MAX_PERCENTAGE_REWARD_BN, MAX_UNWIND_FACTOR_BN, true)
+        .configurePNL(
+          takeProfitPriceTarget,
+          SUPPLY_AMOUNT,
+          MAX_PERCENTAGE_REWARD_BN,
+          MAX_UNWIND_FACTOR_BN,
+          bot.address,
+          true
+        )
 
       const takeProfitSettings = await account.callStatic.getPNLSettingsAt(0)
       const stoplossSettings = await account.callStatic.getPNLSettingsAt(1)

@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import { BigNumber, BigNumberish } from 'ethers'
 import { parseEther } from 'ethers/lib/utils'
 import { ethers } from 'hardhat'
-import { AAVE_PLATFORM, COMPOUND_PLATFORM, COMPOUND_TOKENS_TO_CTOKENS, USE_UNISWAP_EXCHANGE } from '../constants/deploy'
+import { AAVE_PLATFORM, COMPOUND_PLATFORM, COMPOUND_TOKENS_TO_CTOKENS } from '../constants/deploy'
 import { DAI, TokenData, USDC, WETH } from '../constants/tokens'
 import { sendToken } from '../scripts/utils'
 import { CompoundPriceOracleMock } from '../typechain'
@@ -11,6 +11,7 @@ import { AllConnectors } from '../typechain/AllConnectors'
 import { MANTISSA } from '../test/shared/constants'
 import { simplePositionFixture } from '../test/shared/fixtures'
 import {
+  encodePath,
   float2SolidityTokenAmount,
   getAavePrice,
   getCompoundPrice,
@@ -19,7 +20,8 @@ import {
   v3QuoteExactOutput,
 } from '../test/shared/utils'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
-import { findBestUniswapV3Route } from './utils/RouteFinders'
+import { deriveUniswapV3Path } from './utils/RouteFinders'
+import { OneInchResponses } from './test-artifacts/oneInchResponses'
 
 const MAX_UNWIND_FACTOR_BN = MANTISSA
 
@@ -121,9 +123,18 @@ describe('SimplePositionStopLossConnector', () => {
           await principalToken.contract.connect(alice).approve(account.address, ethers.constants.MaxUint256)
 
           let maxBorrowAmount = BigNumber.from(0)
-          const path = await findBestUniswapV3Route(borrowToken, principalToken, borrowAmount, ethers.provider)
 
-          const { encodedPath, tokenPath } = path
+          const oneInchResponseKey = `${borrowToken.symbol}-${principalToken.symbol}`
+          const oneInchResponse = OneInchResponses[oneInchResponseKey]
+          if (!oneInchResponse) throw new Error(`Could not find 1inch response artifact for ${oneInchResponseKey}`)
+
+          const { tokenPath, feePath } = await deriveUniswapV3Path(
+            borrowToken,
+            principalToken,
+            oneInchResponse,
+            ethers.provider
+          )
+          const encodedPath = encodePath(tokenPath, feePath)
 
           try {
             const { amountIn_BN: simulatedBorrowAmount } = await v3QuoteExactOutput(
