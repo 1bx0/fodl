@@ -1,0 +1,37 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/Fodl/connectors/SetTokenURIConnector.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n\npragma solidity 0.6.12;\n\nimport '../modules/FoldingAccount/FoldingAccountStorage.sol';\nimport '../core/interfaces/IFodlNFTProvider.sol';\nimport '../core/interfaces/IFodlNFT.sol';\n\ncontract SetTokenURIConnector is FoldingAccountStorage {\n    string private constant ETH_SIGN_PREFIX = '\\x19Ethereum Signed Message:\\n32';\n\n    address public immutable authoriser;\n\n    constructor(address _authoriser) public {\n        authoriser = _authoriser;\n    }\n\n    function setTokenURI(\n        string memory tokenURI,\n        uint8 v,\n        bytes32 r,\n        bytes32 s\n    ) external onlyAccountOwner {\n        bytes32 h = keccak256(abi.encodePacked(ETH_SIGN_PREFIX, keccak256(abi.encodePacked(address(this), tokenURI))));\n        require(ecrecover(h, v, r, s) == authoriser, 'Invalid authoriser signature');\n\n        IFodlNFT(IFodlNFTProvider(aStore().foldingRegistry).fodlNFT()).setTokenUri(tokenURI);\n    }\n}\n"
+    },
+    "contracts/Fodl/modules/FoldingAccount/FoldingAccountStorage.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n\npragma solidity 0.6.12;\n\ncontract FoldingAccountStorage {\n    bytes32 constant ACCOUNT_STORAGE_POSITION = keccak256('folding.account.storage');\n\n    /**\n     * entryCaller:         address of the caller of the account, during a transaction\n     *\n     * callbackTarget:      address of logic to be run when expecting a callback\n     *\n     * expectedCallbackSig: signature of function to be run when expecting a callback\n     *\n     * foldingRegistry      address of factory creating FoldingAccount\n     *\n     * nft:                 address of the nft contract.\n     *\n     * owner:               address of the owner of this FoldingAccount.\n     */\n    struct AccountStore {\n        address entryCaller;\n        address callbackTarget;\n        bytes4 expectedCallbackSig;\n        address foldingRegistry;\n        address nft;\n        address owner;\n    }\n\n    modifier onlyAccountOwner() {\n        AccountStore storage s = aStore();\n        require(s.entryCaller == s.owner, 'FA2');\n        _;\n    }\n\n    modifier onlyNFTContract() {\n        AccountStore storage s = aStore();\n        require(s.entryCaller == s.nft, 'FA3');\n        _;\n    }\n\n    modifier onlyAccountOwnerOrRegistry() {\n        AccountStore storage s = aStore();\n        require(s.entryCaller == s.owner || s.entryCaller == s.foldingRegistry, 'FA4');\n        _;\n    }\n\n    function aStore() internal pure returns (AccountStore storage s) {\n        bytes32 position = ACCOUNT_STORAGE_POSITION;\n        assembly {\n            s_slot := position\n        }\n    }\n\n    function accountOwner() internal view returns (address) {\n        return aStore().owner;\n    }\n}\n"
+    },
+    "contracts/Fodl/core/interfaces/IFodlNFTProvider.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n\npragma solidity 0.6.12;\n\ninterface IFodlNFTProvider {\n    function fodlNFT() external view returns (address);\n}\n"
+    },
+    "contracts/Fodl/core/interfaces/IFodlNFT.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n\npragma solidity 0.6.12;\n\ninterface IFodlNFT {\n    function setTokenUri(string memory _tokenURI) external;\n}\n"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 9999
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    }
+  }
+}

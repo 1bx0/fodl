@@ -1,0 +1,81 @@
+{
+  "address": "0x0f4c8c96dcf9ee267d5caEF410FE38f501845C3a",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_nft",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "oldOwner",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnerChanged",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "oldOwner",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "resetAccount",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0xb48da5104bb09d6d12eb5511212404e000e52a22aa4a273fb00184103136918e",
+  "receipt": {
+    "to": null,
+    "from": "0xFF5039700e8f404A58c1d259ea5b722fEdc280E5",
+    "contractAddress": "0x0f4c8c96dcf9ee267d5caEF410FE38f501845C3a",
+    "transactionIndex": 102,
+    "gasUsed": "225637",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x88d15dbf1b185c5ebd95fab97f2cd36c47c9bf49e35a79e29fac367a00e375ce",
+    "transactionHash": "0xb48da5104bb09d6d12eb5511212404e000e52a22aa4a273fb00184103136918e",
+    "logs": [],
+    "blockNumber": 14069765,
+    "cumulativeGasUsed": "10381722",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0x70febbA7d45Cfe6D99847bA4ccc393373B1eA8Aa"
+  ],
+  "solcInputHash": "15db755415a486b202edd005ead049cc",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.12+commit.27d51765\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_nft\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"oldOwner\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnerChanged\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"oldOwner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"resetAccount\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"stateVariables\":{\"ownershipNFT\":{\"details\":\"Reference to the NFT that is allowed to reset this account\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/Fodl/connectors/ResetAccountConnector.sol\":\"ResetAccountConnector\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":9999},\"remappings\":[]},\"sources\":{\"contracts/Fodl/connectors/ResetAccountConnector.sol\":{\"keccak256\":\"0x4b9cd9413981e584f88c3b6a8891bb1c0d44a56262ee4242b8a3ee14656886c4\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://4be5b45f041e8c0753a08cfd91f155823c2935eaa17c65896a9246ca79b6deb5\",\"dweb:/ipfs/QmdnMiYkQEi3PstZ2bUAcXoPapmqZUBorNica3E6sm6BZr\"]},\"contracts/Fodl/connectors/interfaces/IResetAccountConnector.sol\":{\"keccak256\":\"0x0c7fbb5385716625ba2911dedd66e9740637940d4cc3c6b4f76ad7d510ce5919\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://57f52b8bfd7f36d1753d5c2ef2721482182555739a58cbd4ac8cce9954ca32ef\",\"dweb:/ipfs/QmWXq6UmA362hWDSFSB2StMWGrsbnmCNLDQHSsUYcuGr6j\"]},\"contracts/Fodl/modules/FoldingAccount/FoldingAccountStorage.sol\":{\"keccak256\":\"0xe9fef50ff4abf71b3f00b9237f04ca319d3df4c418182dd5480221adea42d155\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://185ef27498c6c233796cbd812cf32b16fd278786652b2922bea3b5d93553ad16\",\"dweb:/ipfs/QmbXMrRy6XpUH9T9iVNNVBkgZBxgDokRqkad4uRowqLQjp\"]},\"contracts/Fodl/modules/PNL/PNLStorage.sol\":{\"keccak256\":\"0x73a79f89541db5e265df9aa37929be4ee3b5e64c68c6b957f3cabdea5e0b76e4\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://0801e618c161a5d2eacaa2fad390e080e705a5c7ea2b39cbfac062458571d8fa\",\"dweb:/ipfs/Qmf4zAoNyBZMFyHVpSjuurVatk48XncA22RijFYVPt2oRp\"]},\"contracts/Fodl/modules/StopLoss/StopLossStorage.sol\":{\"keccak256\":\"0x0ac76a10b71589bc24621e9099554f4797374a0b7674528640952d7314bef711\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://1c7c70c882ca6c41e7118072ea0c5777590025065534cc871a0c32e93891556d\",\"dweb:/ipfs/QmbX28VKCTKdgEGboWbuWCtWuxxmJ8s2SJe9c3VQZKPSUY\"]}},\"version\":1}",
+  "bytecode": "0x60a060405234801561001057600080fd5b506040516103823803806103828339818101604052602081101561003357600080fd5b5051606081901b6001600160601b0319166080526001600160a01b031661031c61006660003980608d525061031c6000f3fe608060405234801561001057600080fd5b506004361061002b5760003560e01c8063c9aa10ca14610030575b600080fd5b6100736004803603606081101561004657600080fd5b5073ffffffffffffffffffffffffffffffffffffffff813581169160208101359091169060400135610075565b005b3373ffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000000000000000000000000000000000000000000000161461011957604080517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600360248201527f4641330000000000000000000000000000000000000000000000000000000000604482015290519081900360640190fd5b7fb532073b38c83145e3e5135377a08bf9aab55bc0fd7c1179cd4fb995d2a5159c6101426101ff565b600401546040805173ffffffffffffffffffffffffffffffffffffffff928316815291851660208301528051918290030190a18161017e6101ff565b60040180547fffffffffffffffffffffffff00000000000000000000000000000000000000001673ffffffffffffffffffffffffffffffffffffffff9283161790558316156101fa5760006101d1610223565b60006002820181905560018201819055815590506101ed610247565b6101f890600061026b565b505b505050565b7fadbb89e904f74d44d0d104c851da4f2fa24de8f1dee64f038923bb940f37d53a90565b7f71e33351f6c2f31004e68ac32dd5a4884e99e8c3aa8dcf1997909021899a861490565b7fb51bdc7cd98f38ba50227dc2098602aa9272e97c313e50af0f3c4f4f271a50c290565b508054600082556005029060005260206000209081019061028c919061028f565b50565b5b808211156102e2576000808255600182018190556002820181905560038201556004810180547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00169055600501610290565b509056fea2646970667358221220eb93984da1333a7695f6c83bce0bffe858b0fd0685a2e89c35169eefd3deed4164736f6c634300060c0033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061002b5760003560e01c8063c9aa10ca14610030575b600080fd5b6100736004803603606081101561004657600080fd5b5073ffffffffffffffffffffffffffffffffffffffff813581169160208101359091169060400135610075565b005b3373ffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000000000000000000000000000000000000000000000161461011957604080517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152600360248201527f4641330000000000000000000000000000000000000000000000000000000000604482015290519081900360640190fd5b7fb532073b38c83145e3e5135377a08bf9aab55bc0fd7c1179cd4fb995d2a5159c6101426101ff565b600401546040805173ffffffffffffffffffffffffffffffffffffffff928316815291851660208301528051918290030190a18161017e6101ff565b60040180547fffffffffffffffffffffffff00000000000000000000000000000000000000001673ffffffffffffffffffffffffffffffffffffffff9283161790558316156101fa5760006101d1610223565b60006002820181905560018201819055815590506101ed610247565b6101f890600061026b565b505b505050565b7fadbb89e904f74d44d0d104c851da4f2fa24de8f1dee64f038923bb940f37d53a90565b7f71e33351f6c2f31004e68ac32dd5a4884e99e8c3aa8dcf1997909021899a861490565b7fb51bdc7cd98f38ba50227dc2098602aa9272e97c313e50af0f3c4f4f271a50c290565b508054600082556005029060005260206000209081019061028c919061028f565b50565b5b808211156102e2576000808255600182018190556002820181905560038201556004810180547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00169055600501610290565b509056fea2646970667358221220eb93984da1333a7695f6c83bce0bffe858b0fd0685a2e89c35169eefd3deed4164736f6c634300060c0033"
+}
