@@ -1,0 +1,672 @@
+{
+  "address": "0x47cdcAe79b3A03EF1aC05DAAbf7820a25983435b",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "owners",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "removeOwner",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "revokeConfirmation",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "isOwner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "confirmations",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "pending",
+          "type": "bool"
+        },
+        {
+          "name": "executed",
+          "type": "bool"
+        }
+      ],
+      "name": "getTransactionCount",
+      "outputs": [
+        {
+          "name": "count",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "addOwner",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "isConfirmed",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getConfirmationCount",
+      "outputs": [
+        {
+          "name": "count",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "transactions",
+      "outputs": [
+        {
+          "name": "destination",
+          "type": "address"
+        },
+        {
+          "name": "value",
+          "type": "uint256"
+        },
+        {
+          "name": "data",
+          "type": "bytes"
+        },
+        {
+          "name": "executed",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getOwners",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "from",
+          "type": "uint256"
+        },
+        {
+          "name": "to",
+          "type": "uint256"
+        },
+        {
+          "name": "pending",
+          "type": "bool"
+        },
+        {
+          "name": "executed",
+          "type": "bool"
+        }
+      ],
+      "name": "getTransactionIds",
+      "outputs": [
+        {
+          "name": "_transactionIds",
+          "type": "uint256[]"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getConfirmations",
+      "outputs": [
+        {
+          "name": "_confirmations",
+          "type": "address[]"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "transactionCount",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_required",
+          "type": "uint256"
+        }
+      ],
+      "name": "changeRequirement",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "confirmTransaction",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "destination",
+          "type": "address"
+        },
+        {
+          "name": "value",
+          "type": "uint256"
+        },
+        {
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "name": "submitTransaction",
+      "outputs": [
+        {
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "MAX_OWNER_COUNT",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "required",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "replaceOwner",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "executeTransaction",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_owners",
+          "type": "address[]"
+        },
+        {
+          "name": "_required",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "fallback"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Confirmation",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Revocation",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Submission",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Execution",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "ExecutionFailure",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "sender",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        }
+      ],
+      "name": "Deposit",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnerAddition",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnerRemoval",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "required",
+          "type": "uint256"
+        }
+      ],
+      "name": "RequirementChange",
+      "type": "event"
+    }
+  ],
+  "transactionHash": "0xa73f181007125a04982100f4bd6a1e167a4599e326719efdb447e7f4816d4735",
+  "receipt": {
+    "to": null,
+    "from": "0xFF5039700e8f404A58c1d259ea5b722fEdc280E5",
+    "contractAddress": "0x47cdcAe79b3A03EF1aC05DAAbf7820a25983435b",
+    "transactionIndex": 97,
+    "gasUsed": "1812937",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0xc38f77ee155e621961683a4cac24f16b3a97df61fce045d393c3763ced2b7239",
+    "transactionHash": "0xa73f181007125a04982100f4bd6a1e167a4599e326719efdb447e7f4816d4735",
+    "logs": [],
+    "blockNumber": 16080480,
+    "cumulativeGasUsed": "11084707",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    [
+      "0x85630cd831AfC74AD3c90024CF4F15A187768da0",
+      "0xF00db2BDc61BaD6C404e55767d4dad696F07bB3b",
+      "0x2969E2042a3836B077e6d7C58e41d58f66c4455b",
+      "0xE150fEf6CDc4DB5168Ae3c85b74e442542d51de5",
+      "0x656cc850ae2288D8bd31E231c3CE8Ce2C6bf1332",
+      "0xff5039700e8f404a58c1d259ea5b722fedc280e5"
+    ],
+    4
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "b1a489ef7884eefbd968a7fcff02d9bc",
+  "metadata": "{\"compiler\":{\"version\":\"0.4.16+commit.d7661dd9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"owners\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"removeOwner\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"transactionId\",\"type\":\"uint256\"}],\"name\":\"revokeConfirmation\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"address\"}],\"name\":\"isOwner\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"},{\"name\":\"\",\"type\":\"address\"}],\"name\":\"confirmations\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"pending\",\"type\":\"bool\"},{\"name\":\"executed\",\"type\":\"bool\"}],\"name\":\"getTransactionCount\",\"outputs\":[{\"name\":\"count\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"addOwner\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"transactionId\",\"type\":\"uint256\"}],\"name\":\"isConfirmed\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"transactionId\",\"type\":\"uint256\"}],\"name\":\"getConfirmationCount\",\"outputs\":[{\"name\":\"count\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"transactions\",\"outputs\":[{\"name\":\"destination\",\"type\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\"},{\"name\":\"executed\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getOwners\",\"outputs\":[{\"name\":\"\",\"type\":\"address[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"from\",\"type\":\"uint256\"},{\"name\":\"to\",\"type\":\"uint256\"},{\"name\":\"pending\",\"type\":\"bool\"},{\"name\":\"executed\",\"type\":\"bool\"}],\"name\":\"getTransactionIds\",\"outputs\":[{\"name\":\"_transactionIds\",\"type\":\"uint256[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"transactionId\",\"type\":\"uint256\"}],\"name\":\"getConfirmations\",\"outputs\":[{\"name\":\"_confirmations\",\"type\":\"address[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"transactionCount\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_required\",\"type\":\"uint256\"}],\"name\":\"changeRequirement\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"transactionId\",\"type\":\"uint256\"}],\"name\":\"confirmTransaction\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"destination\",\"type\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\"},{\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"submitTransaction\",\"outputs\":[{\"name\":\"transactionId\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"MAX_OWNER_COUNT\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"required\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"owner\",\"type\":\"address\"},{\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"replaceOwner\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"transactionId\",\"type\":\"uint256\"}],\"name\":\"executeTransaction\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"name\":\"_owners\",\"type\":\"address[]\"},{\"name\":\"_required\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"payable\":true,\"stateMutability\":\"payable\",\"type\":\"fallback\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"transactionId\",\"type\":\"uint256\"}],\"name\":\"Confirmation\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":true,\"name\":\"transactionId\",\"type\":\"uint256\"}],\"name\":\"Revocation\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"transactionId\",\"type\":\"uint256\"}],\"name\":\"Submission\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"transactionId\",\"type\":\"uint256\"}],\"name\":\"Execution\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"transactionId\",\"type\":\"uint256\"}],\"name\":\"ExecutionFailure\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Deposit\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnerAddition\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnerRemoval\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"required\",\"type\":\"uint256\"}],\"name\":\"RequirementChange\",\"type\":\"event\"}],\"devdoc\":{\"author\":\"Stefan George - <stefan.george@consensys.net>\",\"methods\":{\"addOwner(address)\":{\"details\":\"Allows to add a new owner. Transaction has to be sent by wallet.\",\"params\":{\"owner\":\"Address of new owner.\"}},\"changeRequirement(uint256)\":{\"details\":\"Allows to change the number of required confirmations. Transaction has to be sent by wallet.\",\"params\":{\"_required\":\"Number of required confirmations.\"}},\"confirmTransaction(uint256)\":{\"details\":\"Allows an owner to confirm a transaction.\",\"params\":{\"transactionId\":\"Transaction ID.\"}},\"executeTransaction(uint256)\":{\"details\":\"Allows anyone to execute a confirmed transaction.\",\"params\":{\"transactionId\":\"Transaction ID.\"}},\"getConfirmationCount(uint256)\":{\"details\":\"Returns number of confirmations of a transaction.\",\"params\":{\"transactionId\":\"Transaction ID.\"},\"return\":\"Number of confirmations.\"},\"getConfirmations(uint256)\":{\"details\":\"Returns array with owner addresses, which confirmed transaction.\",\"params\":{\"transactionId\":\"Transaction ID.\"},\"return\":\"Returns array of owner addresses.\"},\"getOwners()\":{\"details\":\"Returns list of owners.\",\"return\":\"List of owner addresses.\"},\"getTransactionCount(bool,bool)\":{\"details\":\"Returns total number of transactions after filers are applied.\",\"params\":{\"executed\":\"Include executed transactions.\",\"pending\":\"Include pending transactions.\"},\"return\":\"Total number of transactions after filters are applied.\"},\"getTransactionIds(uint256,uint256,bool,bool)\":{\"details\":\"Returns list of transaction IDs in defined range.\",\"params\":{\"executed\":\"Include executed transactions.\",\"from\":\"Index start position of transaction array.\",\"pending\":\"Include pending transactions.\",\"to\":\"Index end position of transaction array.\"},\"return\":\"Returns array of transaction IDs.\"},\"isConfirmed(uint256)\":{\"details\":\"Returns the confirmation status of a transaction.\",\"params\":{\"transactionId\":\"Transaction ID.\"},\"return\":\"Confirmation status.\"},\"removeOwner(address)\":{\"details\":\"Allows to remove an owner. Transaction has to be sent by wallet.\",\"params\":{\"owner\":\"Address of owner.\"}},\"replaceOwner(address,address)\":{\"details\":\"Allows to replace an owner with a new owner. Transaction has to be sent by wallet.\",\"params\":{\"newOwner\":\"Address of new owner.\",\"owner\":\"Address of owner to be replaced.\"}},\"revokeConfirmation(uint256)\":{\"details\":\"Allows an owner to revoke a confirmation for a transaction.\",\"params\":{\"transactionId\":\"Transaction ID.\"}},\"submitTransaction(address,uint256,bytes)\":{\"details\":\"Allows an owner to submit and confirm a transaction.\",\"params\":{\"data\":\"Transaction data payload.\",\"destination\":\"Transaction target address.\",\"value\":\"Transaction ether value.\"},\"return\":\"Returns transaction ID.\"}},\"title\":\"Multisignature wallet - Allows multiple parties to agree on transactions before execution.\"},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"contracts/FodlGovernance/MultiSigWallet.sol\":\"MultiSigWallet\"},\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":9999},\"remappings\":[]},\"sources\":{\"contracts/FodlGovernance/MultiSigWallet.sol\":{\"content\":\"// Taken from: https://github.com/gnosis/MultiSigWallet/blob/master/contracts/MultiSigWallet.sol\\n\\npragma solidity 0.4.16;\\n\\n/// @title Multisignature wallet - Allows multiple parties to agree on transactions before execution.\\n/// @author Stefan George - <stefan.george@consensys.net>\\ncontract MultiSigWallet {\\n    /*\\n     *  Events\\n     */\\n    event Confirmation(address indexed sender, uint256 indexed transactionId);\\n    event Revocation(address indexed sender, uint256 indexed transactionId);\\n    event Submission(uint256 indexed transactionId);\\n    event Execution(uint256 indexed transactionId);\\n    event ExecutionFailure(uint256 indexed transactionId);\\n    event Deposit(address indexed sender, uint256 value);\\n    event OwnerAddition(address indexed owner);\\n    event OwnerRemoval(address indexed owner);\\n    event RequirementChange(uint256 required);\\n\\n    /*\\n     *  Constants\\n     */\\n    uint256 public constant MAX_OWNER_COUNT = 50;\\n\\n    /*\\n     *  Storage\\n     */\\n    mapping(uint256 => Transaction) public transactions;\\n    mapping(uint256 => mapping(address => bool)) public confirmations;\\n    mapping(address => bool) public isOwner;\\n    address[] public owners;\\n    uint256 public required;\\n    uint256 public transactionCount;\\n\\n    struct Transaction {\\n        address destination;\\n        uint256 value;\\n        bytes data;\\n        bool executed;\\n    }\\n\\n    /*\\n     *  Modifiers\\n     */\\n    modifier onlyWallet() {\\n        require(msg.sender == address(this));\\n        _;\\n    }\\n\\n    modifier ownerDoesNotExist(address owner) {\\n        require(!isOwner[owner]);\\n        _;\\n    }\\n\\n    modifier ownerExists(address owner) {\\n        require(isOwner[owner]);\\n        _;\\n    }\\n\\n    modifier transactionExists(uint256 transactionId) {\\n        require(transactions[transactionId].destination != 0);\\n        _;\\n    }\\n\\n    modifier confirmed(uint256 transactionId, address owner) {\\n        require(confirmations[transactionId][owner]);\\n        _;\\n    }\\n\\n    modifier notConfirmed(uint256 transactionId, address owner) {\\n        require(!confirmations[transactionId][owner]);\\n        _;\\n    }\\n\\n    modifier notExecuted(uint256 transactionId) {\\n        require(!transactions[transactionId].executed);\\n        _;\\n    }\\n\\n    modifier notNull(address _address) {\\n        require(_address != 0);\\n        _;\\n    }\\n\\n    modifier validRequirement(uint256 ownerCount, uint256 _required) {\\n        require(ownerCount <= MAX_OWNER_COUNT && _required <= ownerCount && _required != 0 && ownerCount != 0);\\n        _;\\n    }\\n\\n    /// @dev Fallback function allows to deposit ether.\\n    function() payable {\\n        if (msg.value > 0) Deposit(msg.sender, msg.value);\\n    }\\n\\n    /*\\n     * Public functions\\n     */\\n    /// @dev Contract constructor sets initial owners and required number of confirmations.\\n    /// @param _owners List of initial owners.\\n    /// @param _required Number of required confirmations.\\n    function MultiSigWallet(address[] _owners, uint256 _required) public validRequirement(_owners.length, _required) {\\n        for (uint256 i = 0; i < _owners.length; i++) {\\n            require(!isOwner[_owners[i]] && _owners[i] != 0);\\n            isOwner[_owners[i]] = true;\\n        }\\n        owners = _owners;\\n        required = _required;\\n    }\\n\\n    /// @dev Allows to add a new owner. Transaction has to be sent by wallet.\\n    /// @param owner Address of new owner.\\n    function addOwner(address owner)\\n        public\\n        onlyWallet\\n        ownerDoesNotExist(owner)\\n        notNull(owner)\\n        validRequirement(owners.length + 1, required)\\n    {\\n        isOwner[owner] = true;\\n        owners.push(owner);\\n        OwnerAddition(owner);\\n    }\\n\\n    /// @dev Allows to remove an owner. Transaction has to be sent by wallet.\\n    /// @param owner Address of owner.\\n    function removeOwner(address owner) public onlyWallet ownerExists(owner) {\\n        isOwner[owner] = false;\\n        for (uint256 i = 0; i < owners.length - 1; i++)\\n            if (owners[i] == owner) {\\n                owners[i] = owners[owners.length - 1];\\n                break;\\n            }\\n        owners.length -= 1;\\n        if (required > owners.length) changeRequirement(owners.length);\\n        OwnerRemoval(owner);\\n    }\\n\\n    /// @dev Allows to replace an owner with a new owner. Transaction has to be sent by wallet.\\n    /// @param owner Address of owner to be replaced.\\n    /// @param newOwner Address of new owner.\\n    function replaceOwner(address owner, address newOwner)\\n        public\\n        onlyWallet\\n        ownerExists(owner)\\n        ownerDoesNotExist(newOwner)\\n    {\\n        for (uint256 i = 0; i < owners.length; i++)\\n            if (owners[i] == owner) {\\n                owners[i] = newOwner;\\n                break;\\n            }\\n        isOwner[owner] = false;\\n        isOwner[newOwner] = true;\\n        OwnerRemoval(owner);\\n        OwnerAddition(newOwner);\\n    }\\n\\n    /// @dev Allows to change the number of required confirmations. Transaction has to be sent by wallet.\\n    /// @param _required Number of required confirmations.\\n    function changeRequirement(uint256 _required) public onlyWallet validRequirement(owners.length, _required) {\\n        required = _required;\\n        RequirementChange(_required);\\n    }\\n\\n    /// @dev Allows an owner to submit and confirm a transaction.\\n    /// @param destination Transaction target address.\\n    /// @param value Transaction ether value.\\n    /// @param data Transaction data payload.\\n    /// @return Returns transaction ID.\\n    function submitTransaction(\\n        address destination,\\n        uint256 value,\\n        bytes data\\n    ) public returns (uint256 transactionId) {\\n        transactionId = addTransaction(destination, value, data);\\n        confirmTransaction(transactionId);\\n    }\\n\\n    /// @dev Allows an owner to confirm a transaction.\\n    /// @param transactionId Transaction ID.\\n    function confirmTransaction(uint256 transactionId)\\n        public\\n        ownerExists(msg.sender)\\n        transactionExists(transactionId)\\n        notConfirmed(transactionId, msg.sender)\\n    {\\n        confirmations[transactionId][msg.sender] = true;\\n        Confirmation(msg.sender, transactionId);\\n        executeTransaction(transactionId);\\n    }\\n\\n    /// @dev Allows an owner to revoke a confirmation for a transaction.\\n    /// @param transactionId Transaction ID.\\n    function revokeConfirmation(uint256 transactionId)\\n        public\\n        ownerExists(msg.sender)\\n        confirmed(transactionId, msg.sender)\\n        notExecuted(transactionId)\\n    {\\n        confirmations[transactionId][msg.sender] = false;\\n        Revocation(msg.sender, transactionId);\\n    }\\n\\n    /// @dev Allows anyone to execute a confirmed transaction.\\n    /// @param transactionId Transaction ID.\\n    function executeTransaction(uint256 transactionId)\\n        public\\n        ownerExists(msg.sender)\\n        confirmed(transactionId, msg.sender)\\n        notExecuted(transactionId)\\n    {\\n        if (isConfirmed(transactionId)) {\\n            Transaction storage txn = transactions[transactionId];\\n            txn.executed = true;\\n            if (external_call(txn.destination, txn.value, txn.data.length, txn.data)) Execution(transactionId);\\n            else {\\n                ExecutionFailure(transactionId);\\n                txn.executed = false;\\n            }\\n        }\\n    }\\n\\n    // call has been separated into its own function in order to take advantage\\n    // of the Solidity's code generator to produce a loop that copies tx.data into memory.\\n    function external_call(\\n        address destination,\\n        uint256 value,\\n        uint256 dataLength,\\n        bytes data\\n    ) internal returns (bool) {\\n        bool result;\\n        assembly {\\n            let x := mload(0x40) // \\\"Allocate\\\" memory for output (0x40 is where \\\"free memory\\\" pointer is stored by convention)\\n            let d := add(data, 32) // First 32 bytes are the padded length of data, so exclude that\\n            result := call(\\n                sub(gas, 34710), // 34710 is the value that solidity is currently emitting\\n                // It includes callGas (700) + callVeryLow (3, to pay for SUB) + callValueTransferGas (9000) +\\n                // callNewAccountGas (25000, in case the destination address does not exist and needs creating)\\n                destination,\\n                value,\\n                d,\\n                dataLength, // Size of the input (in bytes) - this is what fixes the padding problem\\n                x,\\n                0 // Output is ignored, therefore the output size is zero\\n            )\\n        }\\n        return result;\\n    }\\n\\n    /// @dev Returns the confirmation status of a transaction.\\n    /// @param transactionId Transaction ID.\\n    /// @return Confirmation status.\\n    function isConfirmed(uint256 transactionId) public constant returns (bool) {\\n        uint256 count = 0;\\n        for (uint256 i = 0; i < owners.length; i++) {\\n            if (confirmations[transactionId][owners[i]]) count += 1;\\n            if (count == required) return true;\\n        }\\n    }\\n\\n    /*\\n     * Internal functions\\n     */\\n    /// @dev Adds a new transaction to the transaction mapping, if transaction does not exist yet.\\n    /// @param destination Transaction target address.\\n    /// @param value Transaction ether value.\\n    /// @param data Transaction data payload.\\n    /// @return Returns transaction ID.\\n    function addTransaction(\\n        address destination,\\n        uint256 value,\\n        bytes data\\n    ) internal notNull(destination) returns (uint256 transactionId) {\\n        transactionId = transactionCount;\\n        transactions[transactionId] = Transaction({\\n            destination: destination,\\n            value: value,\\n            data: data,\\n            executed: false\\n        });\\n        transactionCount += 1;\\n        Submission(transactionId);\\n    }\\n\\n    /*\\n     * Web3 call functions\\n     */\\n    /// @dev Returns number of confirmations of a transaction.\\n    /// @param transactionId Transaction ID.\\n    /// @return Number of confirmations.\\n    function getConfirmationCount(uint256 transactionId) public constant returns (uint256 count) {\\n        for (uint256 i = 0; i < owners.length; i++) if (confirmations[transactionId][owners[i]]) count += 1;\\n    }\\n\\n    /// @dev Returns total number of transactions after filers are applied.\\n    /// @param pending Include pending transactions.\\n    /// @param executed Include executed transactions.\\n    /// @return Total number of transactions after filters are applied.\\n    function getTransactionCount(bool pending, bool executed) public constant returns (uint256 count) {\\n        for (uint256 i = 0; i < transactionCount; i++)\\n            if ((pending && !transactions[i].executed) || (executed && transactions[i].executed)) count += 1;\\n    }\\n\\n    /// @dev Returns list of owners.\\n    /// @return List of owner addresses.\\n    function getOwners() public constant returns (address[]) {\\n        return owners;\\n    }\\n\\n    /// @dev Returns array with owner addresses, which confirmed transaction.\\n    /// @param transactionId Transaction ID.\\n    /// @return Returns array of owner addresses.\\n    function getConfirmations(uint256 transactionId) public constant returns (address[] _confirmations) {\\n        address[] memory confirmationsTemp = new address[](owners.length);\\n        uint256 count = 0;\\n        uint256 i;\\n        for (i = 0; i < owners.length; i++)\\n            if (confirmations[transactionId][owners[i]]) {\\n                confirmationsTemp[count] = owners[i];\\n                count += 1;\\n            }\\n        _confirmations = new address[](count);\\n        for (i = 0; i < count; i++) _confirmations[i] = confirmationsTemp[i];\\n    }\\n\\n    /// @dev Returns list of transaction IDs in defined range.\\n    /// @param from Index start position of transaction array.\\n    /// @param to Index end position of transaction array.\\n    /// @param pending Include pending transactions.\\n    /// @param executed Include executed transactions.\\n    /// @return Returns array of transaction IDs.\\n    function getTransactionIds(\\n        uint256 from,\\n        uint256 to,\\n        bool pending,\\n        bool executed\\n    ) public constant returns (uint256[] _transactionIds) {\\n        uint256[] memory transactionIdsTemp = new uint256[](transactionCount);\\n        uint256 count = 0;\\n        uint256 i;\\n        for (i = 0; i < transactionCount; i++)\\n            if ((pending && !transactions[i].executed) || (executed && transactions[i].executed)) {\\n                transactionIdsTemp[count] = i;\\n                count += 1;\\n            }\\n        _transactionIds = new uint256[](to - from);\\n        for (i = from; i < to; i++) _transactionIds[i - from] = transactionIdsTemp[i];\\n    }\\n}\\n\",\"keccak256\":\"0xe8de0fbc5b3d3f871375dad18523979a831b925b92ae8a51304c0380779cffb7\"}},\"version\":1}",
+  "bytecode": "0x606060405234156200001057600080fd5b60405162001c4938038062001c49833981016040528080518201919060200180519150505b6000825182603282111580156200004c5750818111155b80156200005857508015155b80156200006457508115155b15156200007057600080fd5b600092505b84518310156200014157600260008685815181106200009057fe5b90602001906020020151600160a060020a0316815260208101919091526040016000205460ff16158015620000e35750848381518110620000cd57fe5b90602001906020020151600160a060020a031615155b1515620000ef57600080fd5b6001600260008786815181106200010257fe5b90602001906020020151600160a060020a031681526020810191909152604001600020805460ff19169115159190911790555b60019092019162000075565b60038580516200015692916020019062000169565b5060048490555b5b505050505062000204565b828054828255906000526020600020908101928215620001c3579160200282015b82811115620001c35782518254600160a060020a031916600160a060020a0391909116178255602092909201916001909101906200018a565b5b50620001d2929150620001d6565b5090565b6200020191905b80821115620001d2578054600160a060020a0319168155600101620001dd565b5090565b90565b611a3580620002146000396000f3006060604052361561011a5763ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663025e7c278114610172578063173825d9146101b157806320ea8d86146101df5780632f54bf6e146101f75780633411c81c14610237578063547415251461027a5780637065cb48146102a9578063784547a7146102d75780638b51d13f146103015780639ace38c214610329578063a0e67e2b146103f5578063a8abe69a1461045c578063b5dc40c3146104d3578063b77bf6001461053d578063ba51a6df14610562578063c01a8c841461057a578063c642747414610592578063d74f8edd14610616578063dc8452cd1461063b578063e20056e614610660578063ee22610b14610694575b5b600034111561016f573373ffffffffffffffffffffffffffffffffffffffff167fe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c3460405190815260200160405180910390a25b5b005b341561017d57600080fd5b6101886004356106ac565b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200160405180910390f35b34156101bc57600080fd5b61016f73ffffffffffffffffffffffffffffffffffffffff600435166106eb565b005b34156101ea57600080fd5b61016f60043561092b565b005b341561020257600080fd5b61022373ffffffffffffffffffffffffffffffffffffffff60043516610a34565b604051901515815260200160405180910390f35b341561024257600080fd5b61022360043573ffffffffffffffffffffffffffffffffffffffff60243516610a49565b604051901515815260200160405180910390f35b341561028557600080fd5b61029760043515156024351515610a69565b60405190815260200160405180910390f35b34156102b457600080fd5b61016f73ffffffffffffffffffffffffffffffffffffffff60043516610ad8565b005b34156102e257600080fd5b610223600435610c63565b604051901515815260200160405180910390f35b341561030c57600080fd5b610297600435610d04565b60405190815260200160405180910390f35b341561033457600080fd5b61033f600435610d90565b60405173ffffffffffffffffffffffffffffffffffffffff851681526020810184905281151560608201526080604082018181528454600260001961010060018416150201909116049183018290529060a0830190859080156103e35780601f106103b8576101008083540402835291602001916103e3565b820191906000526020600020905b8154815290600101906020018083116103c657829003601f168201915b50509550505050505060405180910390f35b341561040057600080fd5b610408610dd1565b60405160208082528190810183818151815260200191508051906020019060200280838360005b838110156104485780820151818401525b60200161042f565b505050509050019250505060405180910390f35b341561046757600080fd5b61040860043560243560443515156064351515610e47565b60405160208082528190810183818151815260200191508051906020019060200280838360005b838110156104485780820151818401525b60200161042f565b505050509050019250505060405180910390f35b34156104de57600080fd5b610408600435610f75565b60405160208082528190810183818151815260200191508051906020019060200280838360005b838110156104485780820151818401525b60200161042f565b505050509050019250505060405180910390f35b341561054857600080fd5b61029761112b565b60405190815260200160405180910390f35b341561056d57600080fd5b61016f600435611131565b005b341561058557600080fd5b61016f6004356111e1565b005b341561059d57600080fd5b6102976004803573ffffffffffffffffffffffffffffffffffffffff169060248035919060649060443590810190830135806020601f8201819004810201604051908101604052818152929190602084018383808284375094965061130795505050505050565b60405190815260200160405180910390f35b341561062157600080fd5b610297611327565b60405190815260200160405180910390f35b341561064657600080fd5b61029761132c565b60405190815260200160405180910390f35b341561066b57600080fd5b61016f73ffffffffffffffffffffffffffffffffffffffff60043581169060243516611332565b005b341561069f57600080fd5b61016f600435611582565b005b60038054829081106106ba57fe5b906000526020600020900160005b915054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b60003073ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561072757600080fd5b73ffffffffffffffffffffffffffffffffffffffff8216600090815260026020526040902054829060ff16151561075d57600080fd5b73ffffffffffffffffffffffffffffffffffffffff83166000908152600260205260408120805460ff1916905591505b600354600019018210156108b3578273ffffffffffffffffffffffffffffffffffffffff166003838154811015156107c157fe5b906000526020600020900160005b9054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1614156108a75760038054600019810190811061081c57fe5b906000526020600020900160005b9054906101000a900473ffffffffffffffffffffffffffffffffffffffff1660038381548110151561085857fe5b906000526020600020900160005b6101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506108b3565b5b60019091019061078d565b6003805460001901906108c690826118f1565b5060035460045411156108df576003546108df90611131565b5b8273ffffffffffffffffffffffffffffffffffffffff167f8001553a916ef2f495d26a907cc54d96ed840d7bda71e73194bf5a9df7a76b9060405160405180910390a25b5b505b5050565b3373ffffffffffffffffffffffffffffffffffffffff811660009081526002602052604090205460ff16151561096057600080fd5b60008281526001602090815260408083203373ffffffffffffffffffffffffffffffffffffffff8116855292529091205483919060ff1615156109a257600080fd5b600084815260208190526040902060030154849060ff16156109c357600080fd5b600085815260016020908152604080832073ffffffffffffffffffffffffffffffffffffffff3316808552925291829020805460ff1916905586917ff6a317157440607f36269043eb55f1287a5a19ba2216afeab88cd46cbcfb88e9905160405180910390a35b5b505b50505b5050565b60026020526000908152604090205460ff1681565b600160209081526000928352604080842090915290825290205460ff1681565b6000805b600554811015610ad057838015610a96575060008181526020819052604090206003015460ff16155b80610aba5750828015610aba575060008181526020819052604090206003015460ff165b5b15610ac7576001820191505b5b600101610a6d565b5b5092915050565b3073ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141515610b1257600080fd5b73ffffffffffffffffffffffffffffffffffffffff8116600090815260026020526040902054819060ff1615610b4757600080fd5b8173ffffffffffffffffffffffffffffffffffffffff81161515610b6a57600080fd5b60038054905060010160045460328211158015610b875750818111155b8015610b9257508015155b8015610b9d57508115155b1515610ba857600080fd5b73ffffffffffffffffffffffffffffffffffffffff85166000908152600260205260409020805460ff191660019081179091556003805490918101610bed83826118f1565b916000526020600020900160005b815473ffffffffffffffffffffffffffffffffffffffff808a166101009390930a8381029102199091161790915590507ff39e6e1eb0edcf53c221607b54b00cd28f3196fed0a24994dc308b8f611b682d60405160405180910390a25b5b50505b505b505b50565b600080805b600354811015610cfc5760008481526001602052604081206003805491929184908110610c9157fe5b906000526020600020900160005b905473ffffffffffffffffffffffffffffffffffffffff6101009290920a900416815260208101919091526040016000205460ff1615610ce0576001820191505b600454821415610cf35760019250610cfc565b5b600101610c68565b5b5050919050565b6000805b600354811015610d895760008381526001602052604081206003805491929184908110610d3157fe5b906000526020600020900160005b905473ffffffffffffffffffffffffffffffffffffffff6101009290920a900416815260208101919091526040016000205460ff1615610d80576001820191505b5b600101610d08565b5b50919050565b600060208190529081526040902080546001820154600383015473ffffffffffffffffffffffffffffffffffffffff90921692909160029091019060ff1684565b610dd9611945565b6003805480602002602001604051908101604052809291908181526020018280548015610e3c57602002820191906000526020600020905b815473ffffffffffffffffffffffffffffffffffffffff168152600190910190602001808311610e11575b505050505090505b90565b610e4f611945565b610e57611945565b600080600554604051805910610e6a5750595b908082528060200260200182016040525b50925060009150600090505b600554811015610f0257858015610eb0575060008181526020819052604090206003015460ff16155b80610ed45750848015610ed4575060008181526020819052604090206003015460ff165b5b15610ef95780838381518110610ee757fe5b60209081029091010152600191909101905b5b600101610e87565b878703604051805910610f125750595b908082528060200260200182016040525b5093508790505b86811015610f6957828181518110610f3e57fe5b906020019060200201518489830381518110610f5657fe5b602090810290910101525b600101610f2a565b5b505050949350505050565b610f7d611945565b610f85611945565b6003546000908190604051805910610f9a5750595b908082528060200260200182016040525b50925060009150600090505b6003548110156110a45760008581526001602052604081206003805491929184908110610fe057fe5b906000526020600020900160005b905473ffffffffffffffffffffffffffffffffffffffff6101009290920a900416815260208101919091526040016000205460ff161561109b57600380548290811061103657fe5b906000526020600020900160005b9054906101000a900473ffffffffffffffffffffffffffffffffffffffff1683838151811061106f57fe5b73ffffffffffffffffffffffffffffffffffffffff909216602092830290910190910152600191909101905b5b600101610fb7565b816040518059106110b25750595b908082528060200260200182016040525b509350600090505b81811015611122578281815181106110df57fe5b906020019060200201518482815181106110f557fe5b73ffffffffffffffffffffffffffffffffffffffff9092166020928302909101909101525b6001016110cb565b5b505050919050565b60055481565b3073ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561116b57600080fd5b60035481603282118015906111805750818111155b801561118b57508015155b801561119657508115155b15156111a157600080fd5b60048390557fa3f1ee9126a074d9326c682f561767f710e927faa811f7a99829d49dc421797a8360405190815260200160405180910390a15b5b50505b50565b3373ffffffffffffffffffffffffffffffffffffffff811660009081526002602052604090205460ff16151561121657600080fd5b600082815260208190526040902054829073ffffffffffffffffffffffffffffffffffffffff16151561124857600080fd5b60008381526001602090815260408083203373ffffffffffffffffffffffffffffffffffffffff8116855292529091205484919060ff161561128957600080fd5b600085815260016020818152604080842073ffffffffffffffffffffffffffffffffffffffff3316808652925292839020805460ff191690921790915586917f4a504a94899432a9846e1aa406dceb1bcfd538bb839071d49d1e5e23f5be30ef905160405180910390a3610a2a85611582565b5b5b50505b505b5050565b6000611314848484611798565b905061131f816111e1565b5b9392505050565b603281565b60045481565b60003073ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561136e57600080fd5b73ffffffffffffffffffffffffffffffffffffffff8316600090815260026020526040902054839060ff1615156113a457600080fd5b73ffffffffffffffffffffffffffffffffffffffff8316600090815260026020526040902054839060ff16156113d957600080fd5b600092505b6003548310156114c2578473ffffffffffffffffffffffffffffffffffffffff1660038481548110151561140e57fe5b906000526020600020900160005b9054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1614156114b6578360038481548110151561146757fe5b906000526020600020900160005b6101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506114c2565b5b6001909201916113de565b73ffffffffffffffffffffffffffffffffffffffff808616600081815260026020526040808220805460ff199081169091559388168252908190208054909316600117909255907f8001553a916ef2f495d26a907cc54d96ed840d7bda71e73194bf5a9df7a76b90905160405180910390a28373ffffffffffffffffffffffffffffffffffffffff167ff39e6e1eb0edcf53c221607b54b00cd28f3196fed0a24994dc308b8f611b682d60405160405180910390a25b5b505b505b505050565b3373ffffffffffffffffffffffffffffffffffffffff811660009081526002602052604081205490919060ff1615156115ba57600080fd5b60008381526001602090815260408083203373ffffffffffffffffffffffffffffffffffffffff8116855292529091205484919060ff1615156115fc57600080fd5b600085815260208190526040902060030154859060ff161561161d57600080fd5b61162686610c63565b1561178b576000868152602081815260409182902060038101805460ff1916600190811790915581548183015460028085018054959c5061171a9773ffffffffffffffffffffffffffffffffffffffff9094169692956000199581161561010002959095019094160492918391601f8301819004810201905190810160405280929190818152602001828054600181600116156101000203166002900480156117105780601f106116e557610100808354040283529160200191611710565b820191906000526020600020905b8154815290600101906020018083116116f357829003601f168201915b50505050506118c9565b1561175157857f33e13ecb54c3076d8e8bb8c2881800a4d972b792045ffae98fdf46df365fed7560405160405180910390a261178b565b857f526441bb6c1aba3c9a4a6ca1d6545da9c2333c8c48343ef398eb858d72b7923660405160405180910390a260038501805460ff191690555b5b5b5b505b50505b505050565b60008373ffffffffffffffffffffffffffffffffffffffff811615156117bd57600080fd5b60055491506080604051908101604090815273ffffffffffffffffffffffffffffffffffffffff8716825260208083018790528183018690526000606084018190528581529081905220815181547fffffffffffffffffffffffff00000000000000000000000000000000000000001673ffffffffffffffffffffffffffffffffffffffff919091161781556020820151816001015560408201518160020190805161186d929160200190611969565b506060820151600391909101805460ff191691151591909117905550600580546001019055817fc0ba8fe4b176c1714197d43b9cc6bcf797a4a7461c5fe8d0ef6e184ae7601e5160405160405180910390a25b5b509392505050565b6000806040516020840160008287838a8c6187965a03f1925050508091505b50949350505050565b815481835581811511610924576000838152602090206109249181019083016119e8565b5b505050565b815481835581811511610924576000838152602090206109249181019083016119e8565b5b505050565b60206040519081016040526000815290565b60206040519081016040526000815290565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106119aa57805160ff19168380011785556119d7565b828001600101855582156119d7579182015b828111156119d75782518255916020019190600101906119bc565b5b506119e49291506119e8565b5090565b610e4491905b808211156119e457600081556001016119ee565b5090565b905600a165627a7a72305820cb56fc87e2e8cdbb84551483e0380ac5facfa9e4e04a4f2b121202bfb84752f70029",
+  "deployedBytecode": "0x6060604052361561011a5763ffffffff7c0100000000000000000000000000000000000000000000000000000000600035041663025e7c278114610172578063173825d9146101b157806320ea8d86146101df5780632f54bf6e146101f75780633411c81c14610237578063547415251461027a5780637065cb48146102a9578063784547a7146102d75780638b51d13f146103015780639ace38c214610329578063a0e67e2b146103f5578063a8abe69a1461045c578063b5dc40c3146104d3578063b77bf6001461053d578063ba51a6df14610562578063c01a8c841461057a578063c642747414610592578063d74f8edd14610616578063dc8452cd1461063b578063e20056e614610660578063ee22610b14610694575b5b600034111561016f573373ffffffffffffffffffffffffffffffffffffffff167fe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c3460405190815260200160405180910390a25b5b005b341561017d57600080fd5b6101886004356106ac565b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200160405180910390f35b34156101bc57600080fd5b61016f73ffffffffffffffffffffffffffffffffffffffff600435166106eb565b005b34156101ea57600080fd5b61016f60043561092b565b005b341561020257600080fd5b61022373ffffffffffffffffffffffffffffffffffffffff60043516610a34565b604051901515815260200160405180910390f35b341561024257600080fd5b61022360043573ffffffffffffffffffffffffffffffffffffffff60243516610a49565b604051901515815260200160405180910390f35b341561028557600080fd5b61029760043515156024351515610a69565b60405190815260200160405180910390f35b34156102b457600080fd5b61016f73ffffffffffffffffffffffffffffffffffffffff60043516610ad8565b005b34156102e257600080fd5b610223600435610c63565b604051901515815260200160405180910390f35b341561030c57600080fd5b610297600435610d04565b60405190815260200160405180910390f35b341561033457600080fd5b61033f600435610d90565b60405173ffffffffffffffffffffffffffffffffffffffff851681526020810184905281151560608201526080604082018181528454600260001961010060018416150201909116049183018290529060a0830190859080156103e35780601f106103b8576101008083540402835291602001916103e3565b820191906000526020600020905b8154815290600101906020018083116103c657829003601f168201915b50509550505050505060405180910390f35b341561040057600080fd5b610408610dd1565b60405160208082528190810183818151815260200191508051906020019060200280838360005b838110156104485780820151818401525b60200161042f565b505050509050019250505060405180910390f35b341561046757600080fd5b61040860043560243560443515156064351515610e47565b60405160208082528190810183818151815260200191508051906020019060200280838360005b838110156104485780820151818401525b60200161042f565b505050509050019250505060405180910390f35b34156104de57600080fd5b610408600435610f75565b60405160208082528190810183818151815260200191508051906020019060200280838360005b838110156104485780820151818401525b60200161042f565b505050509050019250505060405180910390f35b341561054857600080fd5b61029761112b565b60405190815260200160405180910390f35b341561056d57600080fd5b61016f600435611131565b005b341561058557600080fd5b61016f6004356111e1565b005b341561059d57600080fd5b6102976004803573ffffffffffffffffffffffffffffffffffffffff169060248035919060649060443590810190830135806020601f8201819004810201604051908101604052818152929190602084018383808284375094965061130795505050505050565b60405190815260200160405180910390f35b341561062157600080fd5b610297611327565b60405190815260200160405180910390f35b341561064657600080fd5b61029761132c565b60405190815260200160405180910390f35b341561066b57600080fd5b61016f73ffffffffffffffffffffffffffffffffffffffff60043581169060243516611332565b005b341561069f57600080fd5b61016f600435611582565b005b60038054829081106106ba57fe5b906000526020600020900160005b915054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b60003073ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561072757600080fd5b73ffffffffffffffffffffffffffffffffffffffff8216600090815260026020526040902054829060ff16151561075d57600080fd5b73ffffffffffffffffffffffffffffffffffffffff83166000908152600260205260408120805460ff1916905591505b600354600019018210156108b3578273ffffffffffffffffffffffffffffffffffffffff166003838154811015156107c157fe5b906000526020600020900160005b9054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1614156108a75760038054600019810190811061081c57fe5b906000526020600020900160005b9054906101000a900473ffffffffffffffffffffffffffffffffffffffff1660038381548110151561085857fe5b906000526020600020900160005b6101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506108b3565b5b60019091019061078d565b6003805460001901906108c690826118f1565b5060035460045411156108df576003546108df90611131565b5b8273ffffffffffffffffffffffffffffffffffffffff167f8001553a916ef2f495d26a907cc54d96ed840d7bda71e73194bf5a9df7a76b9060405160405180910390a25b5b505b5050565b3373ffffffffffffffffffffffffffffffffffffffff811660009081526002602052604090205460ff16151561096057600080fd5b60008281526001602090815260408083203373ffffffffffffffffffffffffffffffffffffffff8116855292529091205483919060ff1615156109a257600080fd5b600084815260208190526040902060030154849060ff16156109c357600080fd5b600085815260016020908152604080832073ffffffffffffffffffffffffffffffffffffffff3316808552925291829020805460ff1916905586917ff6a317157440607f36269043eb55f1287a5a19ba2216afeab88cd46cbcfb88e9905160405180910390a35b5b505b50505b5050565b60026020526000908152604090205460ff1681565b600160209081526000928352604080842090915290825290205460ff1681565b6000805b600554811015610ad057838015610a96575060008181526020819052604090206003015460ff16155b80610aba5750828015610aba575060008181526020819052604090206003015460ff165b5b15610ac7576001820191505b5b600101610a6d565b5b5092915050565b3073ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16141515610b1257600080fd5b73ffffffffffffffffffffffffffffffffffffffff8116600090815260026020526040902054819060ff1615610b4757600080fd5b8173ffffffffffffffffffffffffffffffffffffffff81161515610b6a57600080fd5b60038054905060010160045460328211158015610b875750818111155b8015610b9257508015155b8015610b9d57508115155b1515610ba857600080fd5b73ffffffffffffffffffffffffffffffffffffffff85166000908152600260205260409020805460ff191660019081179091556003805490918101610bed83826118f1565b916000526020600020900160005b815473ffffffffffffffffffffffffffffffffffffffff808a166101009390930a8381029102199091161790915590507ff39e6e1eb0edcf53c221607b54b00cd28f3196fed0a24994dc308b8f611b682d60405160405180910390a25b5b50505b505b505b50565b600080805b600354811015610cfc5760008481526001602052604081206003805491929184908110610c9157fe5b906000526020600020900160005b905473ffffffffffffffffffffffffffffffffffffffff6101009290920a900416815260208101919091526040016000205460ff1615610ce0576001820191505b600454821415610cf35760019250610cfc565b5b600101610c68565b5b5050919050565b6000805b600354811015610d895760008381526001602052604081206003805491929184908110610d3157fe5b906000526020600020900160005b905473ffffffffffffffffffffffffffffffffffffffff6101009290920a900416815260208101919091526040016000205460ff1615610d80576001820191505b5b600101610d08565b5b50919050565b600060208190529081526040902080546001820154600383015473ffffffffffffffffffffffffffffffffffffffff90921692909160029091019060ff1684565b610dd9611945565b6003805480602002602001604051908101604052809291908181526020018280548015610e3c57602002820191906000526020600020905b815473ffffffffffffffffffffffffffffffffffffffff168152600190910190602001808311610e11575b505050505090505b90565b610e4f611945565b610e57611945565b600080600554604051805910610e6a5750595b908082528060200260200182016040525b50925060009150600090505b600554811015610f0257858015610eb0575060008181526020819052604090206003015460ff16155b80610ed45750848015610ed4575060008181526020819052604090206003015460ff165b5b15610ef95780838381518110610ee757fe5b60209081029091010152600191909101905b5b600101610e87565b878703604051805910610f125750595b908082528060200260200182016040525b5093508790505b86811015610f6957828181518110610f3e57fe5b906020019060200201518489830381518110610f5657fe5b602090810290910101525b600101610f2a565b5b505050949350505050565b610f7d611945565b610f85611945565b6003546000908190604051805910610f9a5750595b908082528060200260200182016040525b50925060009150600090505b6003548110156110a45760008581526001602052604081206003805491929184908110610fe057fe5b906000526020600020900160005b905473ffffffffffffffffffffffffffffffffffffffff6101009290920a900416815260208101919091526040016000205460ff161561109b57600380548290811061103657fe5b906000526020600020900160005b9054906101000a900473ffffffffffffffffffffffffffffffffffffffff1683838151811061106f57fe5b73ffffffffffffffffffffffffffffffffffffffff909216602092830290910190910152600191909101905b5b600101610fb7565b816040518059106110b25750595b908082528060200260200182016040525b509350600090505b81811015611122578281815181106110df57fe5b906020019060200201518482815181106110f557fe5b73ffffffffffffffffffffffffffffffffffffffff9092166020928302909101909101525b6001016110cb565b5b505050919050565b60055481565b3073ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561116b57600080fd5b60035481603282118015906111805750818111155b801561118b57508015155b801561119657508115155b15156111a157600080fd5b60048390557fa3f1ee9126a074d9326c682f561767f710e927faa811f7a99829d49dc421797a8360405190815260200160405180910390a15b5b50505b50565b3373ffffffffffffffffffffffffffffffffffffffff811660009081526002602052604090205460ff16151561121657600080fd5b600082815260208190526040902054829073ffffffffffffffffffffffffffffffffffffffff16151561124857600080fd5b60008381526001602090815260408083203373ffffffffffffffffffffffffffffffffffffffff8116855292529091205484919060ff161561128957600080fd5b600085815260016020818152604080842073ffffffffffffffffffffffffffffffffffffffff3316808652925292839020805460ff191690921790915586917f4a504a94899432a9846e1aa406dceb1bcfd538bb839071d49d1e5e23f5be30ef905160405180910390a3610a2a85611582565b5b5b50505b505b5050565b6000611314848484611798565b905061131f816111e1565b5b9392505050565b603281565b60045481565b60003073ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614151561136e57600080fd5b73ffffffffffffffffffffffffffffffffffffffff8316600090815260026020526040902054839060ff1615156113a457600080fd5b73ffffffffffffffffffffffffffffffffffffffff8316600090815260026020526040902054839060ff16156113d957600080fd5b600092505b6003548310156114c2578473ffffffffffffffffffffffffffffffffffffffff1660038481548110151561140e57fe5b906000526020600020900160005b9054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1614156114b6578360038481548110151561146757fe5b906000526020600020900160005b6101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506114c2565b5b6001909201916113de565b73ffffffffffffffffffffffffffffffffffffffff808616600081815260026020526040808220805460ff199081169091559388168252908190208054909316600117909255907f8001553a916ef2f495d26a907cc54d96ed840d7bda71e73194bf5a9df7a76b90905160405180910390a28373ffffffffffffffffffffffffffffffffffffffff167ff39e6e1eb0edcf53c221607b54b00cd28f3196fed0a24994dc308b8f611b682d60405160405180910390a25b5b505b505b505050565b3373ffffffffffffffffffffffffffffffffffffffff811660009081526002602052604081205490919060ff1615156115ba57600080fd5b60008381526001602090815260408083203373ffffffffffffffffffffffffffffffffffffffff8116855292529091205484919060ff1615156115fc57600080fd5b600085815260208190526040902060030154859060ff161561161d57600080fd5b61162686610c63565b1561178b576000868152602081815260409182902060038101805460ff1916600190811790915581548183015460028085018054959c5061171a9773ffffffffffffffffffffffffffffffffffffffff9094169692956000199581161561010002959095019094160492918391601f8301819004810201905190810160405280929190818152602001828054600181600116156101000203166002900480156117105780601f106116e557610100808354040283529160200191611710565b820191906000526020600020905b8154815290600101906020018083116116f357829003601f168201915b50505050506118c9565b1561175157857f33e13ecb54c3076d8e8bb8c2881800a4d972b792045ffae98fdf46df365fed7560405160405180910390a261178b565b857f526441bb6c1aba3c9a4a6ca1d6545da9c2333c8c48343ef398eb858d72b7923660405160405180910390a260038501805460ff191690555b5b5b5b505b50505b505050565b60008373ffffffffffffffffffffffffffffffffffffffff811615156117bd57600080fd5b60055491506080604051908101604090815273ffffffffffffffffffffffffffffffffffffffff8716825260208083018790528183018690526000606084018190528581529081905220815181547fffffffffffffffffffffffff00000000000000000000000000000000000000001673ffffffffffffffffffffffffffffffffffffffff919091161781556020820151816001015560408201518160020190805161186d929160200190611969565b506060820151600391909101805460ff191691151591909117905550600580546001019055817fc0ba8fe4b176c1714197d43b9cc6bcf797a4a7461c5fe8d0ef6e184ae7601e5160405160405180910390a25b5b509392505050565b6000806040516020840160008287838a8c6187965a03f1925050508091505b50949350505050565b815481835581811511610924576000838152602090206109249181019083016119e8565b5b505050565b815481835581811511610924576000838152602090206109249181019083016119e8565b5b505050565b60206040519081016040526000815290565b60206040519081016040526000815290565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106119aa57805160ff19168380011785556119d7565b828001600101855582156119d7579182015b828111156119d75782518255916020019190600101906119bc565b5b506119e49291506119e8565b5090565b610e4491905b808211156119e457600081556001016119ee565b5090565b905600a165627a7a72305820cb56fc87e2e8cdbb84551483e0380ac5facfa9e4e04a4f2b121202bfb84752f70029",
+  "devdoc": {
+    "author": "Stefan George - <stefan.george@consensys.net>",
+    "methods": {
+      "addOwner(address)": {
+        "details": "Allows to add a new owner. Transaction has to be sent by wallet.",
+        "params": {
+          "owner": "Address of new owner."
+        }
+      },
+      "changeRequirement(uint256)": {
+        "details": "Allows to change the number of required confirmations. Transaction has to be sent by wallet.",
+        "params": {
+          "_required": "Number of required confirmations."
+        }
+      },
+      "confirmTransaction(uint256)": {
+        "details": "Allows an owner to confirm a transaction.",
+        "params": {
+          "transactionId": "Transaction ID."
+        }
+      },
+      "executeTransaction(uint256)": {
+        "details": "Allows anyone to execute a confirmed transaction.",
+        "params": {
+          "transactionId": "Transaction ID."
+        }
+      },
+      "getConfirmationCount(uint256)": {
+        "details": "Returns number of confirmations of a transaction.",
+        "params": {
+          "transactionId": "Transaction ID."
+        },
+        "return": "Number of confirmations."
+      },
+      "getConfirmations(uint256)": {
+        "details": "Returns array with owner addresses, which confirmed transaction.",
+        "params": {
+          "transactionId": "Transaction ID."
+        },
+        "return": "Returns array of owner addresses."
+      },
+      "getOwners()": {
+        "details": "Returns list of owners.",
+        "return": "List of owner addresses."
+      },
+      "getTransactionCount(bool,bool)": {
+        "details": "Returns total number of transactions after filers are applied.",
+        "params": {
+          "executed": "Include executed transactions.",
+          "pending": "Include pending transactions."
+        },
+        "return": "Total number of transactions after filters are applied."
+      },
+      "getTransactionIds(uint256,uint256,bool,bool)": {
+        "details": "Returns list of transaction IDs in defined range.",
+        "params": {
+          "executed": "Include executed transactions.",
+          "from": "Index start position of transaction array.",
+          "pending": "Include pending transactions.",
+          "to": "Index end position of transaction array."
+        },
+        "return": "Returns array of transaction IDs."
+      },
+      "isConfirmed(uint256)": {
+        "details": "Returns the confirmation status of a transaction.",
+        "params": {
+          "transactionId": "Transaction ID."
+        },
+        "return": "Confirmation status."
+      },
+      "removeOwner(address)": {
+        "details": "Allows to remove an owner. Transaction has to be sent by wallet.",
+        "params": {
+          "owner": "Address of owner."
+        }
+      },
+      "replaceOwner(address,address)": {
+        "details": "Allows to replace an owner with a new owner. Transaction has to be sent by wallet.",
+        "params": {
+          "newOwner": "Address of new owner.",
+          "owner": "Address of owner to be replaced."
+        }
+      },
+      "revokeConfirmation(uint256)": {
+        "details": "Allows an owner to revoke a confirmation for a transaction.",
+        "params": {
+          "transactionId": "Transaction ID."
+        }
+      },
+      "submitTransaction(address,uint256,bytes)": {
+        "details": "Allows an owner to submit and confirm a transaction.",
+        "params": {
+          "data": "Transaction data payload.",
+          "destination": "Transaction target address.",
+          "value": "Transaction ether value."
+        },
+        "return": "Returns transaction ID."
+      }
+    },
+    "title": "Multisignature wallet - Allows multiple parties to agree on transactions before execution."
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}
