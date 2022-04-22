@@ -35,6 +35,7 @@
     "hardhat-deploy": "^0.9.0",
     "hardhat-deploy-ethers": "^0.3.0-beta.10",
     "hardhat-gas-reporter": "^1.0.4",
+    "hardhat-log-remover": "^2.0.2",
     "hardhat-spdx-license-identifier": "^2.0.3",
     "lodash": "^4.17.21",
     "nodemon": "^2.0.7",
@@ -49,20 +50,24 @@
     "typescript": "^4.3.2"
   },
   "scripts": {
+    "precompile": "npm run clean",
     "compile": "npx hardhat compile --force && tsc -p tsconfig.fodl.typechain.json",
     "test": "npm run compile && npx hardhat test --no-compile",
     "test:unit": "npm run compile --no-compile",
     "test:integration": "npm run compile && npx hardhat test test-integration/index.test.ts --no-compile --config hardhat.integration.config.ts",
     "test:bsc": "npm run clean && npm run compile && npx hardhat test --config hardhat.bsc.config.ts --no-compile",
+    "test:polygon": "npm run clean && npm run compile && npx hardhat test --config hardhat.polygon.config.ts --no-compile",
     "clean": "rm -f cache/solidity-files-cache.json cache/validations.json && rm -rf artifacts",
     "coverage": "hardhat coverage",
     "dev": "nodemon",
     "dev:bsc": "nodemon --config nodemon.bsc.json",
+    "dev:polygon": "nodemon --config nodemon.polygon.json",
     "dev:custom": "nodemon --config nodemon.custom.json",
     "prependlicense": "hardhat prepend-spdx-license",
     "bot:start": "ts-node bot/src/app.ts",
     "bot:build": "tsc -p tsconfig.bot.build.json",
-    "bot:dockerize": "docker build . -t 0xb.one/stoploss -f docker/bot.Dockerfile"
+    "bot:dockerize": "docker build . -t 0xb.one/stoploss -f docker/bot.Dockerfile",
+    "removelogs": "hardhhat remove-logs"
   },
   "engines": {
     "node": "^14.17.0",

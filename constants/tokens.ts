@@ -276,6 +276,12 @@ export const FODL_USDC_SLP = new TokenData({
  * BSC - Binance Smart Chain Tokens
  */
 
+export const XVS = new TokenData({
+  address: '0xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63',
+  symbol: 'XVS',
+  decimals: 18,
+})
+
 export const WBNB = new TokenData({
   address: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
   symbol: 'WBNB',
@@ -318,9 +324,66 @@ export const BUSD = new TokenData({
   provider: '0x8894E0a0c962CB723c1976a4421c95949bE2D4E3',
 })
 
-export const XVS = new TokenData({
-  address: '0xcF6BB5389c92Bdda8a3747Ddb454cB7a64626C63',
-  symbol: 'XVS',
+export const BSCETH = new TokenData({
+  address: '0x2170Ed0880ac9A755fd29B2688956BD959F933F8',
+  symbol: 'ETH',
+  provider: ethers.constants.AddressZero,
+  decimals: 18,
+})
+
+export const BETH = new TokenData({
+  address: '0x250632378E573c6Be1AC2f97Fcdf00515d0Aa91B',
+  symbol: 'BETH',
+  provider: ethers.constants.AddressZero,
+  decimals: 18,
+})
+
+export const XRP = new TokenData({
+  address: '0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE',
+  symbol: 'XRP',
+  provider: '',
+  decimals: 18,
+})
+export const ADA = new TokenData({
+  address: '0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47',
+  symbol: 'ADA',
+  provider: '',
+  decimals: 18,
+})
+export const LTC = new TokenData({
+  address: '0x4338665CBB7B2485A8855A139b75D5e34AB0DB94',
+  symbol: 'LTC',
+  provider: '',
+  decimals: 18,
+})
+export const BCH = new TokenData({
+  address: '0x8fF795a6F4D97E7887C79beA79aba5cc76444aDf',
+  symbol: 'BCH',
+  provider: '',
+  decimals: 18,
+})
+export const DOGE = new TokenData({
+  address: '0xbA2aE424d960c26247Dd6c32edC70B295c744C43',
+  symbol: 'DOGE',
+  provider: '',
+  decimals: 8,
+})
+export const DOT = new TokenData({
+  address: '0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402',
+  symbol: 'DOT',
+  provider: '',
+  decimals: 18,
+})
+export const SXP = new TokenData({
+  address: '0x47BEAd2563dCBf3bF2c9407fEa4dC236fAbA485A',
+  symbol: 'SXP',
+  provider: '',
+  decimals: 18,
+})
+
+export const CAKE = new TokenData({
+  address: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
+  symbol: 'CAKE',
   decimals: 18,
 })
 
@@ -369,3 +432,117 @@ export const vBTC = new TokenData({
   symbol: 'vBTC',
   decimals: 8,
 })
+
+export const vETH = new TokenData({
+  address: '0xf508fCD89b8bd15579dc79A6827cB4686A3592c8',
+  symbol: 'vETH',
+  provider: '',
+  decimals: 8,
+})
+
+export const vBETH = new TokenData({
+  address: '0x972207A639CC1B374B893cc33Fa251b55CEB7c07',
+  symbol: 'vBETH',
+  provider: '',
+  decimals: 8,
+})
+
+export const vXRP = new TokenData({
+  address: '0xB248a295732e0225acd3337607cc01068e3b9c10',
+  symbol: 'vXRP',
+  decimals: 8,
+})
+
+export const vADA = new TokenData({
+  address: '0x9A0AF7FDb2065Ce470D72664DE73cAE409dA28Ec',
+  symbol: 'vADA',
+  decimals: 8,
+})
+
+export const vLTC = new TokenData({
+  address: '0x57A5297F2cB2c0AaC9D554660acd6D385Ab50c6B',
+  symbol: 'vLTC',
+  decimals: 8,
+})
+
+export const vBCH = new TokenData({
+  address: '0x5F0388EBc2B94FA8E123F404b79cCF5f40b29176',
+  symbol: 'vBCH',
+  decimals: 8,
+})
+
+export const vDOGE = new TokenData({
+  address: '0xec3422Ef92B2fb59e84c8B02Ba73F1fE84Ed8D71',
+  symbol: 'vDOGE',
+  decimals: 8,
+})
+
+export const vDOT = new TokenData({
+  address: '0x1610bc33319e9398de5f57B33a5b184c806aD217',
+  symbol: 'vDOT',
+  decimals: 8,
+})
+
+export const vSXP = new TokenData({
+  address: '0x2fF3d0F6990a40261c66E1ff2017aCBc282EB6d0',
+  symbol: 'vSXP',
+  decimals: 8,
+})
+
+export const vCAKE = new TokenData({
+  address: '0x86aC3974e2BD0d60825230fa6F355fF11409df5c',
+  symbol: 'vCAKE',
+  decimals: 8,
+})
+export const POLY = {
+  WMATIC: () =>
+    new TokenData({
+      symbol: 'WMATIC',
+      address: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
+      decimals: 18,
+      provider: ethers.constants.AddressZero,
+    }),
+  WBTC: () =>
+    new TokenData({
+      symbol: 'WBTC',
+      address: '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6',
+      decimals: 8,
+      provider: ethers.constants.AddressZero,
+    }),
+  WETH: () =>
+    new TokenData({
+      symbol: 'WETH',
+      address: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
+      decimals: 18,
+      provider: '0xBA12222222228d8Ba445958a75a0704d566BF2C8',
+    }),
+  USDC: () =>
+    new TokenData({
+      symbol: 'USDC',
+      address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+      decimals: 6,
+      provider: '0xBA12222222228d8Ba445958a75a0704d566BF2C8',
+    }),
+  USDT: () =>
+    new TokenData({
+      symbol: 'USDT',
+      address: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F',
+      decimals: 6,
+      provider: '0x0D0707963952f2fBA59dD06f2b425ace40b492Fe',
+    }),
+  DAI: () =>
+    new TokenData({
+      symbol: 'DAI',
+      address: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
+      decimals: 18,
+      provider: '0xBA12222222228d8Ba445958a75a0704d566BF2C8',
+    }),
+
+  aMATIC: () =>
+    new TokenData({ symbol: 'aMATIC', address: '0x8dF3aad3a84da6b69A4DA8aeC3eA40d9091B2Ac4', decimals: 18 }),
+  aUSDC: () => new TokenData({ symbol: 'aUSDC', address: '0x1a13F4Ca1d028320A707D99520AbFefca3998b7F', decimals: 6 }),
+  aWETH: () => new TokenData({ symbol: 'aWETH', address: '0x28424507fefb6f7f8E9D3860F56504E4e5f5f390', decimals: 18 }),
+  aWBTC: () => new TokenData({ symbol: 'aWBTC', address: '0x5c2ed810328349100A66B82b78a1791B101C9D61', decimals: 8 }),
+  aDAI: () => new TokenData({ symbol: 'aDAI', address: '0x27F8D03b3a2196956ED754baDc28D73be8830A6e', decimals: 18 }),
+  aUSDT: () => new TokenData({ symbol: 'aUSDT', address: '0x60D55F02A771d515e077c9C2403a1ef324885CeC', decimals: 6 }),
+}

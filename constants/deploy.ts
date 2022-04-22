@@ -1,11 +1,16 @@
 import { parseUnits } from 'ethers/lib/utils'
 import {
+  ADA,
   BAT,
+  BCH,
+  BETH,
   BSCDAI,
+  BSCETH,
   BSCUSDC,
   BSCUSDT,
   BTCB,
   BUSD,
+  CAKE,
   cBAT,
   cCOMP,
   cDAI,
@@ -19,21 +24,37 @@ import {
   cWBTC2,
   cZRX,
   DAI,
+  DOGE,
+  DOT,
   LINK,
+  LTC,
+  POLY,
+  SXP,
   TUSD,
   UNI,
   USDC,
   USDT,
+  vADA,
+  vBCH,
+  vBETH,
   vBNB,
   vBTC,
   vBUSD,
+  vCAKE,
   vDAI,
+  vDOGE,
+  vDOT,
+  vETH,
+  vLTC,
+  vSXP,
   vUSDC,
   vUSDT,
+  vXRP,
   vXVS,
   WBNB,
   WBTC,
   WETH,
+  XRP,
   XVS,
   ZRX,
 } from './tokens'
@@ -55,6 +76,8 @@ export const FODL_TOKEN_INITIAL_AMOUNT = parseUnits('1000000000', 18)
 
 export const FODL_NFT_NAME = 'FODL Positions'
 export const FODL_NFT_SYMBOL = 'FODL-POS'
+export const FODL_BSC_ADDRESS = '0x43f5b29D63ceDC5a7c1724dbB1D698FDe05Ada21'
+export const FODL_POLYGON_ADDRESS = '0x5314bA045a459f63906Aa7C76d9F337DcB7d6995'
 
 export const ONE_DAY_SECONDS = 24 * 60 * 60
 export const STAKING_EPOCH_DURATION_SEC = 7 * ONE_DAY_SECONDS
@@ -84,6 +107,16 @@ export const VENUS_TOKENS_TO_VTOKENS = {
   [XVS.address]: vXVS.address,
   [BSCDAI.address]: vDAI.address,
   [BTCB.address]: vBTC.address,
+  [BSCETH.address]: vETH.address,
+  [BETH.address]: vBETH.address,
+  [XRP.address]: vXRP.address,
+  [ADA.address]: vADA.address,
+  [LTC.address]: vLTC.address,
+  [BCH.address]: vBCH.address,
+  [DOGE.address]: vDOGE.address,
+  [DOT.address]: vDOT.address,
+  [SXP.address]: vSXP.address,
+  [CAKE.address]: vCAKE.address,
 }
 
 export const INVERSE_PLATFORM = '0x4dCf7407AE5C07f8681e1659f626E114A7667339'
@@ -96,6 +129,10 @@ export const AAVE_PLATFORM = '0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5'
 export const AAVE_PLATFORM_DATA_PROVIDER = '0x057835Ad21a177dbdd3090bB1CAE03EaCF78Fc6d'
 export const AAVE_PLATFORM_INCENTIVES_CONTROLLER = '0xd784927Ff2f95ba542BfC824c8a8a98F3495f6b5'
 
+export const AAVE_PLATFORM_POLYGON = '0xd05e3E715d945B59290df0ae8eF85c1BdB684744'
+export const AAVE_PLATFORM_DATA_PROVIDER_POLYGON = '0x7551b5D2763519d4e37e8B81929D336De671d46d'
+export const AAVE_PLATFORM_INCENTIVES_CONTROLLER_POLYGON = '0x357D51124f59836DeD84c8a1730D72B749d8BC23'
+
 export const ONE_INCH_EXCHANGE = '0x111111125434b319222CdBf8C261674aDB56F3ae'
 
 export const UNI_ROUTER = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'
@@ -106,6 +143,7 @@ export const UNI_V3_QUOTERV2 = '0x0209c4Dc18B2A1439fD2427E34E7cF3c6B91cFB9'
 export const SUSHI_ROUTER = '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F'
 
 export const PANCAKE_ROUTER = '0x10ED43C718714eb63d5aA57B78B54704E256024E'
+export const QUICKSWAP_ROUTER = '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff'
 
 export const DYDX_SOLO = '0x1E0447b19BB6EcFdAe1e4AE1694b0C3659614e4e'
 
@@ -117,6 +155,7 @@ export const USE_ONEINCH_EXCHANGE = '0x00'
 export const USE_UNISWAP_EXCHANGE = '0x01'
 export const USE_SUSHISWAP_EXCHANGE = '0x02'
 export const USE_PANCAKESWAP_EXCHANGE = '0x11'
+export const USE_QUICKSWAP_EXCHANGE = '0x20'
 export const USE_CONTROLLED_EXCHANGE = '0xff'
 
 export const TOKEN_URI_SIGNER_ADDRESS = '0x7E771C0DB0233f8f06361a7FAa9B7637E0bd39F4'

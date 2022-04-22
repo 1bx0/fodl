@@ -1,0 +1,16 @@
+{
+  "watch": [
+    "test",
+    "test-polygon",
+    "hardhat.polygon.config.ts",
+    ".env",
+    ".env.defaults",
+    "contracts/**/*.sol",
+    "deploy",
+    "scripts",
+    "bot/**/*.ts"
+  ],
+  "ignore": ["./src/**/*.spec.ts"],
+  "ext": "js, json, ts, sol",
+  "exec": "npm run test:polygon"
+}

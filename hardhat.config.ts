@@ -1,14 +1,15 @@
 import '@atixlabs/hardhat-time-n-mine'
-import '@nomiclabs/hardhat-etherscan'
+import '@nomiclabs/hardhat-ethers'
 import '@nomiclabs/hardhat-waffle'
+import '@nomiclabs/hardhat-etherscan'
 import '@openzeppelin/hardhat-upgrades'
 import '@typechain/hardhat'
 import dotenv from 'dotenv'
 import { BigNumber, ethers } from 'ethers'
 import 'hardhat-deploy'
-import 'hardhat-deploy-ethers'
 import 'hardhat-gas-reporter'
 import 'hardhat-spdx-license-identifier'
+import 'hardhat-log-remover'
 import { HardhatUserConfig } from 'hardhat/types'
 import 'solidity-coverage'
 
@@ -18,6 +19,7 @@ const ANODE_PROVIDER_URL = process.env.ANODE_PROVIDER_URL || 'please set ANODE_P
 const GAS_PRICE = Number(process.env.GAS_PRICE) || 'auto'
 const DEPLOYER_SECRET_KEY = process.env.DEPLOYER_SECRET_KEY
 const BSC_DEPLOYMENT = process.env.BSC_DEPLOYMENT
+const POLYGON_DEPLOYMENT = process.env.POLYGON_DEPLOYMENT
 
 const OPTIMIZER_ON_9999 = {
   version: '0.6.12',
@@ -31,10 +33,11 @@ const OPTIMIZER_ON_9999 = {
 
 const DEPLOY_HARDHAT = ['./deploy/hardhat']
 const DEPLOY_BSC = ['./deploy/bsc']
+const DEPLOY_POLYGON = ['./deploy/polygon']
 
-const DEPLOYMENT = BSC_DEPLOYMENT ? DEPLOY_BSC : DEPLOY_HARDHAT
-const CHAIN_ID = BSC_DEPLOYMENT ? 23360 : 13360
-const HARDHAT_ENDPOINT = BSC_DEPLOYMENT ? 'bsc' : 'eth'
+const DEPLOYMENT = BSC_DEPLOYMENT ? DEPLOY_BSC : POLYGON_DEPLOYMENT ? DEPLOY_POLYGON : DEPLOY_HARDHAT
+const CHAIN_ID = BSC_DEPLOYMENT ? 23360 : POLYGON_DEPLOYMENT ? 33360 : 13360
+const HARDHAT_ENDPOINT = BSC_DEPLOYMENT ? 'bsc' : POLYGON_DEPLOYMENT ? 'polygon' : 'eth'
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -67,7 +70,10 @@ const config: HardhatUserConfig = {
       'contracts/Fodl/connectors/SetTokenURIConnector.sol': OPTIMIZER_ON_9999,
       'contracts/FodlGovernance/TimelockGovernance.sol': OPTIMIZER_ON_9999,
       'contracts/Fodl-Bsc/connectors/SimplePosition/SimplePositionFoldingConnector.sol': OPTIMIZER_ON_9999,
-      'contracts/Fodl-Bsc/modules/Exchanger/PancakeswapExchangerAdapter.sol': OPTIMIZER_ON_9999,
+      'contracts/Fodl/modules/Exchanger/PancakeswapExchangerAdapter.sol': OPTIMIZER_ON_9999,
+      'contracts/Fodl-Polygon/connectors/SimplePosition/SimplePositionPolygonFoldingConnector.sol': OPTIMIZER_ON_9999,
+      'contracts/Fodl-Bsc/connectors/SimplePosition/WhitelistPNLConnector.sol': OPTIMIZER_ON_9999,
+      'contracts/Fodl-Bsc/connectors/SimplePosition/WhitelistStopLossConnector.sol': OPTIMIZER_ON_9999,
     },
   },
   mocha: {
@@ -110,6 +116,13 @@ const config: HardhatUserConfig = {
       gasPrice: Number(process.env.GAS_PRICE) || 'auto',
       accounts: DEPLOYER_SECRET_KEY ? [DEPLOYER_SECRET_KEY] : [],
       deploy: DEPLOY_BSC,
+    },
+    polygon: {
+      url: ANODE_PROVIDER_URL,
+      gas: 'auto',
+      gasPrice: Number(process.env.GAS_PRICE) || 'auto',
+      accounts: DEPLOYER_SECRET_KEY ? [DEPLOYER_SECRET_KEY] : [],
+      deploy: DEPLOY_POLYGON,
     },
     beta: {
       url: ANODE_PROVIDER_URL,
